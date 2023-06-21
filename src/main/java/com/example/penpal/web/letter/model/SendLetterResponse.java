@@ -1,8 +1,6 @@
 package com.example.penpal.web.letter.model;
 
-import com.example.penpal.domain.Member.entity.Member;
 import com.example.penpal.domain.letter.entity.Letter;
-import jakarta.persistence.Lob;
 import lombok.*;
 
 import java.time.LocalDateTime;

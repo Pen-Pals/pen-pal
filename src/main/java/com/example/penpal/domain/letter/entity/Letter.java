@@ -1,6 +1,5 @@
 package com.example.penpal.domain.letter.entity;
 
-import com.example.penpal.domain.Member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

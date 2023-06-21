@@ -1,6 +1,5 @@
 package com.example.penpal.web.letter.model;
 
-import com.example.penpal.domain.Member.entity.Member;
 import com.example.penpal.domain.letter.entity.Letter;
 import lombok.AccessLevel;
 import lombok.Getter;
