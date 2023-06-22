@@ -1,23 +1,21 @@
 package com.example.penpal.web.letter.model;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class LetterListDto {
 
-    private int totalCount;
+    private int totalPage;
     List<PageLetterDto> letters;
 
-    @Builder
-    public static LetterListDto of(int totalCount, List<PageLetterDto> letters){
+    public static LetterListDto of(int totalPage, List<PageLetterDto> letters){
         return LetterListDto.builder()
-                .totalCount(totalCount)
+                .totalPage(totalPage)
                 .letters(letters)
                 .build();
     }

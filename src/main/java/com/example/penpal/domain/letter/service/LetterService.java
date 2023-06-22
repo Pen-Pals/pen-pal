@@ -27,16 +27,16 @@ public class LetterService {
     private final LetterRepository letterRepository;
     private final MemberRepository memberRepository;
 
-    public SendLetterResponse sendLetter(SendLetterRequest request, Long sendId) {
+    public SendLetterResponse sendLetter(SendLetterRequest request,Long sendId, Long receiveId) {
         Member member = memberRepository.findById(sendId).orElseThrow(NotFoundMemberException::new);
-        Letter letter = SendLetterRequest.toEntity(request, member);
+        Letter letter = SendLetterRequest.toEntity(request, member, receiveId);
         Letter savedLetter = letterRepository.save(letter);
         return SendLetterResponse.from(savedLetter);
     }
 
     public LetterListDto findLetters(Long sendId, Long receiveId, Pageable pageable){
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), 10, Sort.by("sendDate").descending());
-        Page<Letter> page = letterRepository.findLettersByReceiveId(sendId, receiveId, pageRequest);
+        Page<Letter> page = letterRepository.findBySendIdAndReceiveId(sendId, receiveId, pageRequest);
         int totalPages = page.getTotalPages();
         List<PageLetterDto> letters = page.map(letter -> PageLetterDto.from(letter)).getContent();
         return LetterListDto.of(totalPages, letters);

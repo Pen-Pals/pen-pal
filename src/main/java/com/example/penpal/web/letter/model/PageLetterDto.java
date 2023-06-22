@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PageLetterDto {
 
-    private Member member;
+    private String nickname;
     private Long sendId;
     private Long receiveId;
     private LocalDateTime sendDate;
@@ -19,7 +19,7 @@ public class PageLetterDto {
 
     public static PageLetterDto from(Letter letter){
         return PageLetterDto.builder()
-                .member(letter.getMember())
+                .nickname(letter.getMember().getNickname())
                 .sendId(letter.getSendId())
                 .receiveId(letter.getReceiveId())
                 .sendDate(letter.getSendDate())
