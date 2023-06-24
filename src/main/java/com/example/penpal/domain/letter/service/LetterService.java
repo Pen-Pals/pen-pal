@@ -2,6 +2,8 @@ package com.example.penpal.domain.letter.service;
 
 import com.example.penpal.domain.letter.entity.Letter;
 import com.example.penpal.domain.letter.repository.LetterRepository;
+import com.example.penpal.domain.member.entity.Member;
+import com.example.penpal.domain.member.repository.MemberRepository;
 import com.example.penpal.global.exception.member.NotFoundMemberException;
 import com.example.penpal.web.letter.model.LetterListDto;
 import com.example.penpal.web.letter.model.PageLetterDto;
