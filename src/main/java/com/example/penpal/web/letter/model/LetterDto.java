@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class PageLetterDto {
+public class LetterDto {
 
     private String nickname;
     private Long sendId;
@@ -17,8 +17,8 @@ public class PageLetterDto {
     private LocalDateTime sendDate;
     private String content;
 
-    public static PageLetterDto from(Letter letter){
-        return PageLetterDto.builder()
+    public static LetterDto from(Letter letter){
+        return LetterDto.builder()
                 .nickname(letter.getMember().getNickname())
                 .sendId(letter.getSendId())
                 .receiveId(letter.getReceiveId())

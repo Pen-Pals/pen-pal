@@ -11,9 +11,9 @@ import java.util.List;
 public class PageLetterListDto {
 
     private int totalPage;
-    List<PageLetterDto> letters;
+    List<LetterDto> letters;
 
-    public static PageLetterListDto of(int totalPage, List<PageLetterDto> letters){
+    public static PageLetterListDto of(int totalPage, List<LetterDto> letters){
         return PageLetterListDto.builder()
                 .totalPage(totalPage)
                 .letters(letters)

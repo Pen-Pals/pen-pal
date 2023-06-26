@@ -5,10 +5,7 @@ import com.example.penpal.domain.letter.repository.LetterRepository;
 import com.example.penpal.domain.member.entity.Member;
 import com.example.penpal.domain.member.repository.MemberRepository;
 import com.example.penpal.global.exception.member.NotFoundMemberException;
-import com.example.penpal.web.letter.model.LetterListDto;
-import com.example.penpal.web.letter.model.PageLetterDto;
-import com.example.penpal.web.letter.model.SendLetterRequest;
-import com.example.penpal.web.letter.model.SendLetterResponse;
+import com.example.penpal.web.letter.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,11 +31,11 @@ public class LetterService {
         return SendLetterResponse.from(savedLetter);
     }
 
-    public LetterListDto findLetters(Long sendId, Long receiveId, Pageable pageable){
+    public PageLetterListDto findLetters(Long sendId, Long receiveId, Pageable pageable){
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), 10, Sort.by("sendDate").descending());
         Page<Letter> page = letterRepository.findBySendIdAndReceiveId(sendId, receiveId, pageRequest);
         int totalPages = page.getTotalPages();
-        List<PageLetterDto> letters = page.map(letter -> PageLetterDto.from(letter)).getContent();
-        return LetterListDto.of(totalPages, letters);
+        List<LetterDto> letters = page.map(letter -> LetterDto.from(letter)).getContent();
+        return PageLetterListDto.of(totalPages, letters);
     }
 }
