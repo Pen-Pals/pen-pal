@@ -15,6 +15,9 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
     Page<Letter> findBySendIdAndReceiveId(Long sendId, Long receiveId, Pageable pageable);
 
     @Query("select l from Letter l join fetch Member m where l.receiveId = :userId and l.isArrived = true")
-    List<Letter> findByIsArrived(@Param("userId") Long userId);
+    List<Letter> findRecentLetter(@Param("userId") Long userId);
+
+    @Query("select l from Letter l join fetch Member m where l.receiveId = :userId and l.isArrived = false ")
+    List<Letter> findIncomingLetter(@Param("userId") Long userId);
 
 }

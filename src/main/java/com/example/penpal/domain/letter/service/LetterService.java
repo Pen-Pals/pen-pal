@@ -41,7 +41,14 @@ public class LetterService {
     }
 
     public LetterListDto findRecentArrivedLetters(Long userId){
-        List<LetterDto> letters = letterRepository.findByIsArrived(userId)
+        List<LetterDto> letters = letterRepository.findRecentLetter(userId)
+                .stream().map(l -> LetterDto.from(l))
+                .collect(Collectors.toList());
+        return LetterListDto.from(letters);
+    }
+
+    public LetterListDto findIncomingLetters(Long userId){
+        List<LetterDto> letters = letterRepository.findIncomingLetter(userId)
                 .stream().map(l -> LetterDto.from(l))
                 .collect(Collectors.toList());
         return LetterListDto.from(letters);

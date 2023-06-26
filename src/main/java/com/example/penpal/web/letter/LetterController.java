@@ -42,4 +42,10 @@ public class LetterController {
         LetterListDto letters = letterService.findRecentArrivedLetters(userId);
         return ResponseEntity.ok(letters);
     }
+
+    @GetMapping("/my/incoming")
+    public ResponseEntity<LetterListDto> incomingLetterList(){
+        LetterListDto letters = letterService.findIncomingLetters(userId);
+        return ResponseEntity.ok(letters);
+    }
 }
