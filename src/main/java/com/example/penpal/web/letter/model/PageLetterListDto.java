@@ -8,13 +8,13 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class LetterListDto {
+public class PageLetterListDto {
 
     private int totalPage;
     List<PageLetterDto> letters;
 
-    public static LetterListDto of(int totalPage, List<PageLetterDto> letters){
-        return LetterListDto.builder()
+    public static PageLetterListDto of(int totalPage, List<PageLetterDto> letters){
+        return PageLetterListDto.builder()
                 .totalPage(totalPage)
                 .letters(letters)
                 .build();
