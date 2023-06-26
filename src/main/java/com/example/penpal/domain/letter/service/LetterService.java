@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,5 +38,12 @@ public class LetterService {
         int totalPages = page.getTotalPages();
         List<LetterDto> letters = page.map(letter -> LetterDto.from(letter)).getContent();
         return PageLetterListDto.of(totalPages, letters);
+    }
+
+    public LetterListDto findRecentArrivedLetters(Long userId){
+        List<LetterDto> letters = letterRepository.findByIsArrived(userId)
+                .stream().map(l -> LetterDto.from(l))
+                .collect(Collectors.toList());
+        return LetterListDto.from(letters);
     }
 }
