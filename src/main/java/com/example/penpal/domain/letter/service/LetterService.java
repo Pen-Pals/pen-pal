@@ -4,6 +4,7 @@ import com.example.penpal.domain.letter.entity.Letter;
 import com.example.penpal.domain.letter.repository.LetterRepository;
 import com.example.penpal.domain.member.entity.Member;
 import com.example.penpal.domain.member.repository.MemberRepository;
+import com.example.penpal.global.exception.member.NotFoundLetterException;
 import com.example.penpal.global.exception.member.NotFoundMemberException;
 import com.example.penpal.web.letter.model.*;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +53,10 @@ public class LetterService {
                 .stream().map(l -> LetterDto.from(l))
                 .collect(Collectors.toList());
         return LetterListDto.from(letters);
+    }
+
+    public LetterDto findLetterDetail(Long userId, Long letterId){
+        Letter letter = letterRepository.findByUserId(userId, letterId).orElseThrow(NotFoundLetterException::new);
+        return LetterDto.from(letter);
     }
 }

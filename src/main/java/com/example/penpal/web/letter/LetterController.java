@@ -1,10 +1,7 @@
 package com.example.penpal.web.letter;
 
 import com.example.penpal.domain.letter.service.LetterService;
-import com.example.penpal.web.letter.model.LetterListDto;
-import com.example.penpal.web.letter.model.PageLetterListDto;
-import com.example.penpal.web.letter.model.SendLetterRequest;
-import com.example.penpal.web.letter.model.SendLetterResponse;
+import com.example.penpal.web.letter.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -47,5 +44,12 @@ public class LetterController {
     public ResponseEntity<LetterListDto> incomingLetterList(){
         LetterListDto letters = letterService.findIncomingLetters(userId);
         return ResponseEntity.ok(letters);
+    }
+
+    @GetMapping("/{userId}/{letterId}")
+    public ResponseEntity<LetterDto> letterDetails(@PathVariable Long userId,
+                                                   @PathVariable Long letterId){
+        LetterDto letter = letterService.findLetterDetail(userId, letterId);
+        return ResponseEntity.ok(letter);
     }
 }
