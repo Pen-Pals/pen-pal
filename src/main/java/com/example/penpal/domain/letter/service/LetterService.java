@@ -59,4 +59,8 @@ public class LetterService {
         Letter letter = letterRepository.findByUserId(userId, letterId).orElseThrow(NotFoundLetterException::new);
         return LetterDto.from(letter);
     }
+
+    public void updateReadStatus(Long letterId){
+        letterRepository.updateReadStatus(letterId);
+    }
 }

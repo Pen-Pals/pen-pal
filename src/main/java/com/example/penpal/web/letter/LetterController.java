@@ -52,4 +52,10 @@ public class LetterController {
         LetterDto letter = letterService.findLetterDetail(userId, letterId);
         return ResponseEntity.ok(letter);
     }
+
+    @PatchMapping("/{letterId}")
+    public ResponseEntity<Long> readStatusUpdate(@PathVariable Long letterId){
+        letterService.updateReadStatus(letterId);
+        return ResponseEntity.ok(letterId);
+    }
 }
