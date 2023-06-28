@@ -58,4 +58,10 @@ public class LetterController {
         letterService.updateReadStatus(letterId);
         return ResponseEntity.ok(letterId);
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Long> lettersRemove(@PathVariable("userId") Long otherUserId){
+        letterService.removeLetters(userId,otherUserId);
+        return ResponseEntity.ok(otherUserId);
+    }
 }

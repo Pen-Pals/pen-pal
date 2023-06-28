@@ -63,4 +63,8 @@ public class LetterService {
     public void updateReadStatus(Long letterId){
         letterRepository.updateReadStatus(letterId);
     }
+
+    public void removeLetters(Long userId, Long otherUserId){
+        letterRepository.deleteAllLetter(userId, otherUserId);
+    }
 }

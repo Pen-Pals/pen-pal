@@ -28,4 +28,9 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
     @Modifying
     @Query("update Letter l set l.isRead = true where l.id = :letterId")
     void updateReadStatus(@Param("letterId") Long letterId);
+
+    @Modifying
+    @Query("delete from Letter l where (l.sendId = :userId and l.receiveId = :otherUserId) " +
+            "or (l.sendId = :otherUserId and l.receiveId = :userId)")
+    void deleteAllLetter(@Param("userId") Long userId, @Param("otherUserId") Long otherUserId);
 }
