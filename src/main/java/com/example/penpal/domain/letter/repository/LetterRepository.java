@@ -1,6 +1,7 @@
 package com.example.penpal.domain.letter.repository;
 
 import com.example.penpal.domain.letter.entity.Letter;
+import com.example.penpal.web.letter.model.UnreadCountInterface;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,10 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
 
     //기능 수정 필요
     Page<Letter> findBySendIdAndReceiveId(Long sendId, Long receiveId, Pageable pageable);
+
+    @Query("select l.member as member, count(*) as unreadCount from Letter l join Member m on m.id = l.member.id " +
+            "where l.receiveId = :receiveId and l.isRead = false group by l.member")
+    List<UnreadCountInterface> countUnreadLetterByReceiver(@Param("receiveId") Long receiveId);
 
     @Query("select l from Letter l join fetch Member m where l.receiveId = :userId and l.isArrived = true")
     List<Letter> findRecentLetter(@Param("userId") Long userId);

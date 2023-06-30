@@ -15,8 +15,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.*;
 
 @Service
 @Transactional
@@ -41,17 +47,46 @@ public class LetterService {
         return PageLetterListDto.of(totalPages, letters);
     }
 
+    public CorrespondentListDto findCorrespondents(Long userId){
+        // 대화한 유저 목록
+        List<Member> senders = memberRepository.findSendersByReceiveId(userId);
+        List<Member> receivers = memberRepository.findReceiversBySendId(userId);
+        List<Member> correspondents = Stream.of(senders, receivers)
+                .flatMap(Collection::stream)
+                .distinct()
+                .collect(toList());
+
+        List<CorrespondentDto> defaultCorrespondentDtos = correspondents.stream()
+                .map(m -> CorrespondentDto.of(0, m))
+                .collect(toList());
+
+        // 유저가 아직 읽지 않은 Letter 개수
+        List<UnreadCountInterface> counts = letterRepository.countUnreadLetterByReceiver(userId);
+
+        // 유저가 읽지않은 편지 개수 적용
+        List<CorrespondentDto> correspondentDtos  = defaultCorrespondentDtos.stream()
+                .map(correspondentDto -> {
+                    Optional<UnreadCountInterface> matchingCount = counts.stream()
+                            .filter(count -> count.getMember().equals(correspondentDto.getMember()))
+                            .findFirst();
+                    return matchingCount.map(count -> CorrespondentDto.of(count.getUnreadCount(), count.getMember()))
+                            .orElse(correspondentDto);
+                }).collect(toList());
+
+        return CorrespondentListDto.from(correspondentDtos);
+    }
+
     public LetterListDto findRecentArrivedLetters(Long userId){
         List<LetterDto> letters = letterRepository.findRecentLetter(userId)
                 .stream().map(l -> LetterDto.from(l))
-                .collect(Collectors.toList());
+                .collect(toList());
         return LetterListDto.from(letters);
     }
 
     public LetterListDto findIncomingLetters(Long userId){
         List<LetterDto> letters = letterRepository.findIncomingLetter(userId)
                 .stream().map(l -> LetterDto.from(l))
-                .collect(Collectors.toList());
+                .collect(toList());
         return LetterListDto.from(letters);
     }
 

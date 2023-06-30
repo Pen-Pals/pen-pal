@@ -1,12 +1,20 @@
 package com.example.penpal.web.letter;
 
+import com.example.penpal.domain.letter.repository.LetterRepository;
 import com.example.penpal.domain.letter.service.LetterService;
+import com.example.penpal.domain.member.entity.Member;
+import com.example.penpal.domain.member.repository.MemberRepository;
 import com.example.penpal.web.letter.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +24,8 @@ public class LetterController {
     private final LetterService letterService;
 
     //나중에 인증에서 받아와서 교체
-    Long sendId = 1L;
-    Long userId = 2L;
+    Long sendId = 3L;
+    Long userId = 3L;
 
     @PostMapping("/{userId}")
     public ResponseEntity<SendLetterResponse> send(@PathVariable("userId") Long receiveId,
@@ -32,6 +40,12 @@ public class LetterController {
         //나중에 인증에서 받아오기
         PageLetterListDto letters = letterService.findLetters(sendId, receiveId, pageable);
         return ResponseEntity.ok(letters);
+    }
+
+    @GetMapping
+    public ResponseEntity<CorrespondentListDto> correspondentList(){
+        CorrespondentListDto correspondents = letterService.findCorrespondents(userId);
+        return ResponseEntity.ok(correspondents);
     }
 
     @GetMapping("/my/recent")
