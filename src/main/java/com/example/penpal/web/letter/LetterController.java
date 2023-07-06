@@ -1,20 +1,12 @@
 package com.example.penpal.web.letter;
 
-import com.example.penpal.domain.letter.repository.LetterRepository;
 import com.example.penpal.domain.letter.service.LetterService;
-import com.example.penpal.domain.member.entity.Member;
-import com.example.penpal.domain.member.repository.MemberRepository;
 import com.example.penpal.web.letter.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor

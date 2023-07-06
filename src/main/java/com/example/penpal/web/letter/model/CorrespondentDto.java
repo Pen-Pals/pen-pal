@@ -2,7 +2,6 @@ package com.example.penpal.web.letter.model;
 
 import com.example.penpal.domain.member.entity.Member;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

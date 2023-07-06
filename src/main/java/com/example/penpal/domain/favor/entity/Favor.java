@@ -3,7 +3,6 @@ package com.example.penpal.domain.favor.entity;
 import com.example.penpal.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

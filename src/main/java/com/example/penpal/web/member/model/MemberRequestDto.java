@@ -1,6 +1,5 @@
 package com.example.penpal.web.member.model;
 
-import com.example.penpal.domain.favor.entity.Favor;
 import com.example.penpal.domain.member.entity.Gender;
 import com.example.penpal.domain.member.entity.Member;
 import lombok.AccessLevel;
@@ -9,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
