@@ -7,6 +7,7 @@ import com.example.penpal.global.jwt.TokenDto;
 import com.example.penpal.web.member.model.MemberLoginRequestDto;
 import com.example.penpal.web.member.model.MemberRequestDto;
 import com.example.penpal.web.member.model.MemberResponseDto;
+import com.example.penpal.web.member.model.MemberUpdateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,12 @@ public class AuthController {
     @GetMapping("/info")
     public ResponseEntity<MemberResponseDto> memberInfo() {
         MemberResponseDto result = authService.getMemberInfo();
+        return ResponseEntity.ok(result);
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<MemberResponseDto> editMember(@RequestBody MemberUpdateDto req) {
+        MemberResponseDto result = authService.updateMember(req);
         return ResponseEntity.ok(result);
     }
 }

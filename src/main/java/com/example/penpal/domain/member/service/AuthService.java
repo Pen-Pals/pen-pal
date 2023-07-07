@@ -13,6 +13,7 @@ import com.example.penpal.global.security.SecurityUtil;
 import com.example.penpal.web.member.model.MemberLoginRequestDto;
 import com.example.penpal.web.member.model.MemberRequestDto;
 import com.example.penpal.web.member.model.MemberResponseDto;
+import com.example.penpal.web.member.model.MemberUpdateDto;
 import jakarta.validation.NoProviderFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -67,6 +68,14 @@ public class AuthService {
     public MemberResponseDto getMemberInfo(){
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(NoProviderFoundException::new);
+        return MemberResponseDto.toDto(member);
+    }
+
+    @Transactional
+    public MemberResponseDto updateMember(MemberUpdateDto req) {
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(NoProviderFoundException::new);
+        member.update(req, passwordEncoder);
         return MemberResponseDto.toDto(member);
     }
 

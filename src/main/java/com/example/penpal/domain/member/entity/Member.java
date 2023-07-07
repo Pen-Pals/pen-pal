@@ -2,11 +2,13 @@ package com.example.penpal.domain.member.entity;
 
 import com.example.penpal.domain.common.BaseTimeEntity;
 import com.example.penpal.domain.favor.entity.Favor;
+import com.example.penpal.web.member.model.MemberUpdateDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class Member extends BaseTimeEntity {
     private String nickname;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Gender gender;
 
     @Column(nullable = false)
@@ -54,6 +56,14 @@ public class Member extends BaseTimeEntity {
         this.gender = gender;
         this.birthday = birthday;
         this.authority = authority;
+    }
+
+    public void update(MemberUpdateDto req, PasswordEncoder passwordEncoder) {
+        this.email = req.getEmail();
+        this.password = passwordEncoder.encode(req.getPassword());
+        this.nickname = req.getNickname();
+        this.gender = req.getGender();
+        this.birthday = req.getBirthday();
     }
 
 }
