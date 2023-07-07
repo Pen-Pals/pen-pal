@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.example.penpal.global.security.SecurityUtil.*;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/letters")
@@ -15,14 +17,11 @@ public class LetterController {
 
     private final LetterService letterService;
 
-    //나중에 인증에서 받아와서 교체
-    Long sendId = 3L;
-    Long userId = 3L;
 
     @PostMapping("/{userId}")
     public ResponseEntity<SendLetterResponse> send(@PathVariable("userId") Long receiveId,
                                                    @RequestBody SendLetterRequest request) {
-        SendLetterResponse response = letterService.sendLetter(request, sendId, receiveId);
+        SendLetterResponse response = letterService.sendLetter(request, getCurrentMemberId(), receiveId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -30,25 +29,25 @@ public class LetterController {
     public ResponseEntity<PageLetterListDto> letterList(@PathVariable("userId") Long receiveId,
                                                         Pageable pageable) {
         //나중에 인증에서 받아오기
-        PageLetterListDto letters = letterService.findLetters(sendId, receiveId, pageable);
+        PageLetterListDto letters = letterService.findLetters(getCurrentMemberId(), receiveId, pageable);
         return ResponseEntity.ok(letters);
     }
 
     @GetMapping
     public ResponseEntity<CorrespondentListDto> correspondentList() {
-        CorrespondentListDto correspondents = letterService.findCorrespondents(userId);
+        CorrespondentListDto correspondents = letterService.findCorrespondents(getCurrentMemberId());
         return ResponseEntity.ok(correspondents);
     }
 
     @GetMapping("/my/recent")
     public ResponseEntity<LetterListDto> recentLetterList() {
-        LetterListDto letters = letterService.findRecentArrivedLetters(userId);
+        LetterListDto letters = letterService.findRecentArrivedLetters(getCurrentMemberId());
         return ResponseEntity.ok(letters);
     }
 
     @GetMapping("/my/incoming")
     public ResponseEntity<LetterListDto> incomingLetterList() {
-        LetterListDto letters = letterService.findIncomingLetters(userId);
+        LetterListDto letters = letterService.findIncomingLetters(getCurrentMemberId());
         return ResponseEntity.ok(letters);
     }
 
@@ -67,7 +66,7 @@ public class LetterController {
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Long> lettersRemove(@PathVariable("userId") Long otherUserId) {
-        letterService.removeLetters(userId, otherUserId);
+        letterService.removeLetters(getCurrentMemberId(), otherUserId);
         return ResponseEntity.ok(otherUserId);
     }
 }
