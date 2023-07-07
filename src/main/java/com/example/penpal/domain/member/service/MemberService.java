@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    @Transactional
-    public MemberResponseDto signup(MemberRequestDto req) {
-        Member member = memberRepository.save(req.toEntity());
-        return MemberResponseDto.toDto(member);
-    }
+//    @Transactional
+//    public MemberResponseDto signup(MemberRequestDto req) {
+//        Member member = memberRepository.save(req.toEntity());
+//        return MemberResponseDto.toDto(member);
+//    }
 }
