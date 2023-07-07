@@ -5,11 +5,15 @@ import com.example.penpal.domain.member.entity.RefreshToken;
 import com.example.penpal.domain.member.repository.MemberRepository;
 import com.example.penpal.domain.member.repository.RefreshTokenRepository;
 import com.example.penpal.global.exception.member.DuplicateEmailException;
+import com.example.penpal.global.exception.member.NotFoundMemberException;
+
 import com.example.penpal.global.jwt.TokenDto;
 import com.example.penpal.global.jwt.TokenProvider;
+import com.example.penpal.global.security.SecurityUtil;
 import com.example.penpal.web.member.model.MemberLoginRequestDto;
 import com.example.penpal.web.member.model.MemberRequestDto;
 import com.example.penpal.web.member.model.MemberResponseDto;
+import jakarta.validation.NoProviderFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,6 +21,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,6 +61,13 @@ public class AuthService {
         refreshTokenRepository.save(refreshToken);
 
         return tokenDto;
+    }
+
+
+    public MemberResponseDto getMemberInfo(){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(NoProviderFoundException::new);
+        return MemberResponseDto.toDto(member);
     }
 
 }
