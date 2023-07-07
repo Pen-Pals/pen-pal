@@ -11,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,6 +23,8 @@ public class MemberRequestDto {
     private Gender gender;
     private LocalDate birthday;
 
+    private List<Favor> favors;
+
 
     public Member toEntity(PasswordEncoder passwordEncoder) {
         return Member.builder()
@@ -31,6 +34,7 @@ public class MemberRequestDto {
                 .gender(gender)
                 .birthday(birthday)
                 .authority(Authority.ROLE_USER)
+                .favors(favors)
                 .build();
     }
 

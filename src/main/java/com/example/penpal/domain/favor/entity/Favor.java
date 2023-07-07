@@ -15,7 +15,6 @@ public class Favor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favor_id")
     private Long id;
-
     private boolean movie;
     private boolean language;
     private boolean book;
@@ -32,6 +31,30 @@ public class Favor {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder
+    public Favor(boolean movie,
+                 boolean language,
+                 boolean book,
+                 boolean coding,
+                 boolean fantasy,
+                 boolean sports,
+                 boolean entertainment,
+                 boolean music,
+                 boolean fashion,
+                 boolean art,
+                 boolean travel) {
+        this.movie = false;
+        this.language = false;
+        this.book = false;
+        this.coding = false;
+        this.fantasy = false;
+        this.sports = false;
+        this.entertainment = false;
+        this.music = false;
+        this.fashion = false;
+        this.art = false;
+        this.travel = false;
+    }
 
 
 }

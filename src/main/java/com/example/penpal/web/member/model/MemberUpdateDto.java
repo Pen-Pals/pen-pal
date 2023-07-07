@@ -35,12 +35,4 @@ public class MemberUpdateDto {
         return new UsernamePasswordAuthenticationToken(email, password);
     }
 
-
-//    void update(String email, String password, String nickname, Gender gender, LocalDate birthday) {
-//        this.email = email;
-//        this.password = password;
-//        this.nickname = nickname;
-//        this.gender = gender;
-//        this.birthday = birthday;
-//    }
 }
