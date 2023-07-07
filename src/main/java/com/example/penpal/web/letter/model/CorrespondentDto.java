@@ -12,7 +12,7 @@ public class CorrespondentDto {
     int unreadCount;
     private Member member;
 
-    public static CorrespondentDto of(int unreadCount, Member member){
+    public static CorrespondentDto of(int unreadCount, Member member) {
         CorrespondentDto correspondentDto = new CorrespondentDto();
         correspondentDto.unreadCount = unreadCount;
         correspondentDto.member = member;

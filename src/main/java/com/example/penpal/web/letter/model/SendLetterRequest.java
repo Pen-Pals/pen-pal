@@ -17,7 +17,7 @@ public class SendLetterRequest {
     private LocalDateTime receiveDate;
     private LocalDateTime deliveryTime;
 
-    public static Letter toEntity(SendLetterRequest request, Member member, Long receiveId){
+    public static Letter toEntity(SendLetterRequest request, Member member, Long receiveId) {
         return Letter.builder()
                 .member(member)
                 .sendId(member.getId())

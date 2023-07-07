@@ -33,5 +33,4 @@ public class Favor {
     private Member member;
 
 
-
 }

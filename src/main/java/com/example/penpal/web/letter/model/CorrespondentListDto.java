@@ -10,9 +10,9 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CorrespondentListDto {
 
-    private List<CorrespondentDto>  correspondents;
+    private List<CorrespondentDto> correspondents;
 
-    public static CorrespondentListDto from(List<CorrespondentDto> correspondents){
+    public static CorrespondentListDto from(List<CorrespondentDto> correspondents) {
         CorrespondentListDto correspondentListDto = new CorrespondentListDto();
         correspondentListDto.correspondents = correspondents;
         return correspondentListDto;

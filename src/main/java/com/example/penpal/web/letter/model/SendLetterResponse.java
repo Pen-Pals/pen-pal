@@ -26,7 +26,7 @@ public class SendLetterResponse {
     private boolean isRead;
 
 
-    public static SendLetterResponse from(Letter letter){
+    public static SendLetterResponse from(Letter letter) {
         return SendLetterResponse.builder()
                 .id(letter.getId())
                 .member(letter.getMember())

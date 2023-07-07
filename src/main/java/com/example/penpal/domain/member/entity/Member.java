@@ -48,6 +48,7 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member")
     private List<Favor> favors = new ArrayList<>();
+
     @Builder
     public Member(String email, String password, String nickname, Gender gender, LocalDate birthday, Authority authority) {
         this.email = email;

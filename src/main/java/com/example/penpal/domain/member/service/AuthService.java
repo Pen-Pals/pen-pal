@@ -60,7 +60,7 @@ public class AuthService {
     }
 
 
-    public MemberResponseDto getMemberInfo(){
+    public MemberResponseDto getMemberInfo() {
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(NoProviderFoundException::new);
         return MemberResponseDto.toDto(member);

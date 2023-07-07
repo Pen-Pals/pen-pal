@@ -21,53 +21,53 @@ public class LetterController {
 
     @PostMapping("/{userId}")
     public ResponseEntity<SendLetterResponse> send(@PathVariable("userId") Long receiveId,
-                                                   @RequestBody SendLetterRequest request){
+                                                   @RequestBody SendLetterRequest request) {
         SendLetterResponse response = letterService.sendLetter(request, sendId, receiveId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<PageLetterListDto> letterList(@PathVariable("userId") Long receiveId,
-                                                        Pageable pageable){
+                                                        Pageable pageable) {
         //나중에 인증에서 받아오기
         PageLetterListDto letters = letterService.findLetters(sendId, receiveId, pageable);
         return ResponseEntity.ok(letters);
     }
 
     @GetMapping
-    public ResponseEntity<CorrespondentListDto> correspondentList(){
+    public ResponseEntity<CorrespondentListDto> correspondentList() {
         CorrespondentListDto correspondents = letterService.findCorrespondents(userId);
         return ResponseEntity.ok(correspondents);
     }
 
     @GetMapping("/my/recent")
-    public ResponseEntity<LetterListDto> recentLetterList(){
+    public ResponseEntity<LetterListDto> recentLetterList() {
         LetterListDto letters = letterService.findRecentArrivedLetters(userId);
         return ResponseEntity.ok(letters);
     }
 
     @GetMapping("/my/incoming")
-    public ResponseEntity<LetterListDto> incomingLetterList(){
+    public ResponseEntity<LetterListDto> incomingLetterList() {
         LetterListDto letters = letterService.findIncomingLetters(userId);
         return ResponseEntity.ok(letters);
     }
 
     @GetMapping("/{userId}/{letterId}")
     public ResponseEntity<LetterDto> letterDetails(@PathVariable Long userId,
-                                                   @PathVariable Long letterId){
+                                                   @PathVariable Long letterId) {
         LetterDto letter = letterService.findLetterDetail(userId, letterId);
         return ResponseEntity.ok(letter);
     }
 
     @PatchMapping("/{letterId}")
-    public ResponseEntity<Long> readStatusUpdate(@PathVariable Long letterId){
+    public ResponseEntity<Long> readStatusUpdate(@PathVariable Long letterId) {
         letterService.updateReadStatus(letterId);
         return ResponseEntity.ok(letterId);
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Long> lettersRemove(@PathVariable("userId") Long otherUserId){
-        letterService.removeLetters(userId,otherUserId);
+    public ResponseEntity<Long> lettersRemove(@PathVariable("userId") Long otherUserId) {
+        letterService.removeLetters(userId, otherUserId);
         return ResponseEntity.ok(otherUserId);
     }
 }

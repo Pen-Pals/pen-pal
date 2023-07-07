@@ -11,7 +11,9 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Optional<Member> findByEmail(String email);
+
     boolean existsByEmail(String email);
+
     @Query("select m from Member m where m.id in (select l.receiveId from Letter l where l.sendId = :sendId)")
     List<Member> findReceiversBySendId(@Param("sendId") Long sendId);
 
