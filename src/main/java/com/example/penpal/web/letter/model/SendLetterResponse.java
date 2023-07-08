@@ -2,6 +2,8 @@ package com.example.penpal.web.letter.model;
 
 import com.example.penpal.domain.letter.entity.Letter;
 import com.example.penpal.domain.member.entity.Member;
+import com.example.penpal.web.member.model.MemberInfoDto;
+import com.example.penpal.web.member.model.MemberResponseDto;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 public class SendLetterResponse {
 
     private Long id;
-    private Member member;
+    private MemberInfoDto member;
     private Long sendId;
     private Long receiveId;
     private String sendLocation;
@@ -29,7 +31,7 @@ public class SendLetterResponse {
     public static SendLetterResponse from(Letter letter) {
         return SendLetterResponse.builder()
                 .id(letter.getId())
-                .member(letter.getMember())
+                .member(MemberInfoDto.toDto(letter.getMember()))
                 .sendId(letter.getSendId())
                 .receiveId(letter.getReceiveId())
                 .sendLocation(letter.getSendLocation())
