@@ -9,9 +9,4 @@ import org.springframework.stereotype.Service;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-//    @Transactional
-//    public MemberResponseDto signup(MemberRequestDto req) {
-//        Member member = memberRepository.save(req.toEntity());
-//        return MemberResponseDto.toDto(member);
-//    }
 }

@@ -1,16 +1,17 @@
 package com.example.penpal.domain.member.service;
 
+import com.example.penpal.domain.favor.entity.Favor;
+import com.example.penpal.domain.favor.repository.FavorRepository;
 import com.example.penpal.domain.member.entity.Member;
 import com.example.penpal.domain.member.entity.RefreshToken;
 import com.example.penpal.domain.member.repository.MemberRepository;
 import com.example.penpal.domain.member.repository.RefreshTokenRepository;
+import com.example.penpal.global.exception.member.DuplicateEmailException;
 import com.example.penpal.global.jwt.TokenDto;
 import com.example.penpal.global.jwt.TokenProvider;
 import com.example.penpal.global.security.SecurityUtil;
-import com.example.penpal.web.member.model.MemberLoginRequestDto;
-import com.example.penpal.web.member.model.MemberRequestDto;
-import com.example.penpal.web.member.model.MemberResponseDto;
-import com.example.penpal.web.member.model.MemberUpdateDto;
+import com.example.penpal.web.favor.model.FavorRequestDto;
+import com.example.penpal.web.member.model.*;
 import jakarta.validation.NoProviderFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,20 +26,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final FavorRepository favorRepository;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Transactional
-    public MemberResponseDto signup(MemberRequestDto req) {
+    public MemberResponseDto signup(SignUpDto req) {
 
-        if (memberRepository.existsByEmail(req.getEmail())) {
-            throw new RuntimeException();
+        if (memberRepository.existsByEmail(req.getMember().getEmail())) {
+            throw new DuplicateEmailException();
         }
-
-        Member member = req.toEntity(passwordEncoder);
-        return MemberResponseDto.toDto(memberRepository.save(member));
-
+        Favor favor = favorRepository.save(req.getFavor().toDto());
+        Member member = req.getMember().toEntity(passwordEncoder, favor);
+        return MemberResponseDto.toDto(member);
     }
 
     @Transactional

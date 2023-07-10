@@ -1,8 +1,10 @@
 package com.example.penpal.web.member.model;
 
+import com.example.penpal.domain.favor.entity.Favor;
 import com.example.penpal.domain.member.entity.Authority;
 import com.example.penpal.domain.member.entity.Gender;
 import com.example.penpal.domain.member.entity.Member;
+import com.example.penpal.web.favor.model.FavorRequestDto;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,11 +23,9 @@ public class MemberRequestDto {
     private String nickname;
     private Gender gender;
     private LocalDate birthday;
+    private Favor favor;
 
-    private List<Favor> favors;
-
-
-    public Member toEntity(PasswordEncoder passwordEncoder) {
+    public Member toEntity(PasswordEncoder passwordEncoder, Favor favor) {
         return Member.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
@@ -34,7 +33,7 @@ public class MemberRequestDto {
                 .gender(gender)
                 .birthday(birthday)
                 .authority(Authority.ROLE_USER)
-                .favors(favors)
+                .favors(favor)
                 .build();
     }
 
@@ -42,3 +41,4 @@ public class MemberRequestDto {
         return new UsernamePasswordAuthenticationToken(email, password);
     }
 }
+

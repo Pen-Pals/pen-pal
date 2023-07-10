@@ -45,12 +45,16 @@ public class Member extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "favor_id")
+    private Favor favors;
 
-    @OneToMany(mappedBy = "member")
-    private List<Favor> favors = new ArrayList<>();
+    public void updateFavors(Favor favors) {
+        this.favors = favors;
+    }
 
     @Builder
-    public Member(String email, String password, String nickname, Gender gender, LocalDate birthday, Authority authority, List<Favor> favors) {
+    public Member(String email, String password, String nickname, Gender gender, LocalDate birthday, Authority authority, Favor favors) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;

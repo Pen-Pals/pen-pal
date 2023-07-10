@@ -1,6 +1,7 @@
 package com.example.penpal.web.favor.model;
 
 import com.example.penpal.domain.favor.entity.Favor;
+import com.example.penpal.domain.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class FavorUpdateDto {
+public class FavorRequestDto {
     private boolean movie;
     private boolean language;
     private boolean book;
@@ -22,17 +23,7 @@ public class FavorUpdateDto {
     private boolean art;
     private boolean travel;
 
-    public Favor toEntity(boolean movie,
-                          boolean language,
-                          boolean book,
-                          boolean coding,
-                          boolean fantasy,
-                          boolean sports,
-                          boolean entertainment,
-                          boolean music,
-                          boolean fashion,
-                          boolean art,
-                          boolean travel) {
+    public Favor toDto() {
         return Favor.builder()
                 .movie(movie)
                 .language(language)

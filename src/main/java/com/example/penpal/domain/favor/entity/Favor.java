@@ -3,6 +3,7 @@ package com.example.penpal.domain.favor.entity;
 import com.example.penpal.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,8 +28,7 @@ public class Favor {
     private boolean art;
     private boolean travel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @OneToOne(mappedBy = "favors")
     private Member member;
 
     @Builder
@@ -43,17 +43,17 @@ public class Favor {
                  boolean fashion,
                  boolean art,
                  boolean travel) {
-        this.movie = false;
-        this.language = false;
-        this.book = false;
-        this.coding = false;
-        this.fantasy = false;
-        this.sports = false;
-        this.entertainment = false;
-        this.music = false;
-        this.fashion = false;
-        this.art = false;
-        this.travel = false;
+        this.movie = movie;
+        this.language = language;
+        this.book = book;
+        this.coding = coding;
+        this.fantasy = fantasy;
+        this.sports = sports;
+        this.entertainment = entertainment;
+        this.music = music;
+        this.fashion = fashion;
+        this.art = art;
+        this.travel = travel;
     }
 
 

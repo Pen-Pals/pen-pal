@@ -2,10 +2,8 @@ package com.example.penpal.web.member;
 
 import com.example.penpal.domain.member.service.AuthService;
 import com.example.penpal.global.jwt.TokenDto;
-import com.example.penpal.web.member.model.MemberLoginRequestDto;
-import com.example.penpal.web.member.model.MemberRequestDto;
-import com.example.penpal.web.member.model.MemberResponseDto;
-import com.example.penpal.web.member.model.MemberUpdateDto;
+import com.example.penpal.web.favor.model.FavorRequestDto;
+import com.example.penpal.web.member.model.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +17,7 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<MemberResponseDto> signup(@RequestBody MemberRequestDto req) {
+    public ResponseEntity<MemberResponseDto> signup(@RequestBody SignUpDto req) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.signup(req));
     }
 

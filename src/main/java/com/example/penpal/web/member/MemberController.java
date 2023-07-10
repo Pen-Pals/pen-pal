@@ -11,11 +11,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
-//    @PostMapping("/sign-up")
-//    public ResponseEntity<MemberResponseDto> singUp(@RequestBody MemberRequestDto req) {
-//        MemberResponseDto result = memberService.signup(req);
-//        return new ResponseEntity(result, HttpStatus.CREATED);
-//    }
-
 
 }

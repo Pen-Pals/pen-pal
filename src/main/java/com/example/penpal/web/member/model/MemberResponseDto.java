@@ -22,7 +22,7 @@ public class MemberResponseDto {
     private String nickname;
     private Gender gender;
     private LocalDate birthday;
-    private List<Favor> favors;
+    private Favor favors;
 
     public static MemberResponseDto toDto(Member member) {
         return new MemberResponseDto(
