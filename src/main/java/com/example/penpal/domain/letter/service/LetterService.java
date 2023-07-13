@@ -94,6 +94,7 @@ public class LetterService {
     }
 
     public void updateReadStatus(Long letterId) {
+        letterRepository.findById(letterId).orElseThrow(NotFoundLetterException::new);
         letterRepository.updateReadStatus(letterId);
     }
 
