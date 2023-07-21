@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +30,19 @@ public class LetterService {
 
     private final LetterRepository letterRepository;
     private final MemberRepository memberRepository;
+    private final LetterDeliveryService letterDeliveryService;
 
     public SendLetterResponse sendLetter(SendLetterRequest request, Long sendId, Long receiveId) {
         Member member = memberRepository.findById(sendId).orElseThrow(NotFoundMemberException::new);
         Letter letter = SendLetterRequest.toEntity(request, member, receiveId);
+
+        DeliveryTimeDto deliveryTimeDto = letterDeliveryService.calculateDeliveryTime(receiveId);
+        LocalDateTime now = LocalDateTime.now()
+                            .plusDays(deliveryTimeDto.getDays())
+                            .plusHours(deliveryTimeDto.getHours())
+                            .plusMinutes(deliveryTimeDto.getMins());
+        letter.storeDeliveryTime(now);
+
         Letter savedLetter = letterRepository.save(letter);
         return SendLetterResponse.from(savedLetter);
     }

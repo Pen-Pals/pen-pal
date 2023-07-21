@@ -39,6 +39,9 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate birthday;
 
+    @Column(nullable = false)
+    private String address;
+
     private String profileText;
     private String profileImage;
     private String location;
@@ -50,13 +53,14 @@ public class Member extends BaseTimeEntity {
     private List<Favor> favors = new ArrayList<>();
 
     @Builder
-    public Member(String email, String password, String nickname, Gender gender, LocalDate birthday, Authority authority) {
+    public Member(String email, String password, String nickname, Gender gender, LocalDate birthday, Authority authority, String address) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.gender = gender;
         this.birthday = birthday;
         this.authority = authority;
+        this.address = address;
     }
 
     public void update(MemberUpdateDto req, PasswordEncoder passwordEncoder) {

@@ -19,6 +19,7 @@ public class MemberResponseDto {
     private String nickname;
     private Gender gender;
     private LocalDate birthday;
+    private String address;
 
     public static MemberResponseDto toDto(Member member) {
         return new MemberResponseDto(
@@ -27,7 +28,8 @@ public class MemberResponseDto {
                 member.getPassword(),
                 member.getNickname(),
                 member.getGender(),
-                member.getBirthday()
+                member.getBirthday(),
+                member.getAddress()
         );
     }
 }

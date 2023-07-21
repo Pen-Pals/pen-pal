@@ -21,4 +21,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "(select distinct m2.id from Member m2 join Letter l on m2.id = l.member.id where l.receiveId = :receiveId)")
     List<Member> findSendersByReceiveId(@Param("receiveId") Long receiveId);
 
+    @Query("select m.address from Member m where m.id = :id")
+    Optional<String> findAddressById(@Param("id") Long id);
+
 }

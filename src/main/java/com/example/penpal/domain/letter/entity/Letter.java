@@ -51,4 +51,9 @@ public class Letter {
         this.isArrived = false;
         this.isRead = false;
     }
+
+    public void storeDeliveryTime(LocalDateTime localDateTime){
+        deliveryTime = localDateTime;
+    }
+
 }
