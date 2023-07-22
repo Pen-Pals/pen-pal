@@ -28,9 +28,6 @@ public class Favor {
     private boolean art;
     private boolean travel;
 
-    @OneToOne(mappedBy = "favors")
-    private Member member;
-
     @Builder
     public Favor(boolean movie,
                  boolean language,

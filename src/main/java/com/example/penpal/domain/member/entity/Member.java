@@ -2,7 +2,9 @@ package com.example.penpal.domain.member.entity;
 
 import com.example.penpal.domain.common.BaseTimeEntity;
 import com.example.penpal.domain.favor.entity.Favor;
+import com.example.penpal.domain.profile.entity.Profile;
 import com.example.penpal.web.member.model.MemberUpdateDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,8 +13,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -39,18 +39,22 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate birthday;
 
-    private String profileText;
-    private String profileImage;
-    private String location;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id")
+    private Profile profile;
+
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "favor_id")
     private Favor favors;
 
     public void updateFavors(Favor favors) {
         this.favors = favors;
+    }
+    public void updateProfile(Profile profile) {
+        this.profile = profile;
     }
 
     @Builder

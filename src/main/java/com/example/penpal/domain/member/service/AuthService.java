@@ -39,6 +39,7 @@ public class AuthService {
         }
         Favor favor = favorRepository.save(req.getFavor().toDto());
         Member member = req.getMember().toEntity(passwordEncoder, favor);
+        memberRepository.save(member);
         return MemberResponseDto.toDto(member);
     }
 
@@ -60,10 +61,11 @@ public class AuthService {
         return tokenDto;
     }
 
-
+    // 개인정보 조회
     public MemberResponseDto getMemberInfo(){
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(NoProviderFoundException::new);
+        System.out.println("member = " + member);
         return MemberResponseDto.toDto(member);
     }
 
