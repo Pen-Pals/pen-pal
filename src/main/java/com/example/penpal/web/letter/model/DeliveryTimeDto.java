@@ -1,6 +1,5 @@
 package com.example.penpal.web.letter.model;
 
-import com.example.penpal.global.exception.letter.WrongTimeFormatException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,24 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeliveryTimeDto {
 
-    private long days;
-    private long hours;
-    private long mins;
+    private int days;
+    private int hours;
+    private int mins;
 
-    public static DeliveryTimeDto from(String time){
-        String[] splitTime = time.split(" ");
-
-        if(splitTime[1].equals("day") || splitTime[1].equals("days")){
-            return new DeliveryTimeDto(Integer.parseInt(splitTime[0]), Integer.parseInt(splitTime[2]), 0);
-        }
-        else if(splitTime[1].equals("hour") || splitTime[1].equals("hours")){
-            return new DeliveryTimeDto(0,Integer.parseInt(splitTime[0]), Integer.parseInt(splitTime[2]));
-        }
-        else if(splitTime[1].equals("min") || splitTime[1].equals("mins")){
-            return new DeliveryTimeDto(0,0,Integer.parseInt(splitTime[0]));
-        }
-        else{
-            throw new WrongTimeFormatException();
-        }
+    public static DeliveryTimeDto from(double distance) {
+        double deliveryTime = Math.round(distance) / 100.00;
+        int days = (int) deliveryTime / 24;
+        deliveryTime -= days * 24;
+        int hours = (int) deliveryTime;
+        deliveryTime -= hours;
+        int mins = (int) (Math.ceil(deliveryTime * 60));
+        return new DeliveryTimeDto(days, hours, mins);
     }
 }

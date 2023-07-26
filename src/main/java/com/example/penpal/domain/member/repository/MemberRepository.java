@@ -24,4 +24,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("select m.address from Member m where m.id = :id")
     Optional<String> findAddressById(@Param("id") Long id);
 
+    @Query("select m.latitude from Member m where m.id = :id")
+    Optional<Double> findLatitudeById(@Param("id") Long id);
+
+    @Query("select m.longitude from Member m where m.id = :id")
+    Optional<Double> findLongitudeById(@Param("id") Long id);
+
 }

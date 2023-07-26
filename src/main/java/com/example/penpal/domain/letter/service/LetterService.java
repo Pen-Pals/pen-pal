@@ -38,9 +38,9 @@ public class LetterService {
 
         DeliveryTimeDto deliveryTimeDto = letterDeliveryService.calculateDeliveryTime(receiveId);
         LocalDateTime now = LocalDateTime.now()
-                            .plusDays(deliveryTimeDto.getDays())
-                            .plusHours(deliveryTimeDto.getHours())
-                            .plusMinutes(deliveryTimeDto.getMins());
+                .plusDays(deliveryTimeDto.getDays())
+                .plusHours(deliveryTimeDto.getHours())
+                .plusMinutes(deliveryTimeDto.getMins());
         letter.storeDeliveryTime(now);
 
         Letter savedLetter = letterRepository.save(letter);

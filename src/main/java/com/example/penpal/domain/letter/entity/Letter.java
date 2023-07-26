@@ -52,7 +52,7 @@ public class Letter {
         this.isRead = false;
     }
 
-    public void storeDeliveryTime(LocalDateTime localDateTime){
+    public void storeDeliveryTime(LocalDateTime localDateTime) {
         deliveryTime = localDateTime;
     }
 

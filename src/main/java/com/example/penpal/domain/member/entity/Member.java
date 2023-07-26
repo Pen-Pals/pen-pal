@@ -45,6 +45,8 @@ public class Member extends BaseTimeEntity {
     private String profileText;
     private String profileImage;
     private String location;
+    private double latitude;
+    private double longitude;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;

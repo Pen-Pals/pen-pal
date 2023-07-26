@@ -2,16 +2,10 @@ package com.example.penpal.domain.letter.service;
 
 import com.example.penpal.domain.letter.repository.LetterRepository;
 import com.example.penpal.domain.member.repository.MemberRepository;
-import com.example.penpal.global.exception.member.NotFoundMemberException;
+import com.example.penpal.global.exception.member.NotExistLocationInfoException;
 import com.example.penpal.global.security.SecurityUtil;
 import com.example.penpal.web.letter.model.DeliveryTimeDto;
-import com.google.maps.DistanceMatrixApi;
-import com.google.maps.GeoApiContext;
-import com.google.maps.model.DistanceMatrixElement;
-import com.google.maps.model.DistanceMatrixRow;
-import com.google.maps.model.TravelMode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,30 +14,38 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LetterDeliveryService {
 
-    private final LetterRepository letterRepository;
     private final MemberRepository memberRepository;
-    @Value("${google.map.key}")
-    private String key;
 
-
-    public DeliveryTimeDto calculateDeliveryTime(Long receiveId){
+    public DeliveryTimeDto calculateDeliveryTime(Long receiveId) {
         Long sendId = SecurityUtil.getCurrentMemberId();
-        String sendAddress = memberRepository.findAddressById(sendId).orElseThrow(NotFoundMemberException::new);
-        String receiveAddress = memberRepository.findAddressById(receiveId).orElseThrow(NotFoundMemberException::new);
 
-        GeoApiContext context = new GeoApiContext.Builder().apiKey(key).build();
-        DistanceMatrixRow[] rows = DistanceMatrixApi.newRequest(context)
-                .origins(sendAddress)
-                .destinations(receiveAddress)
-                .mode(TravelMode.TRANSIT)
-                .awaitIgnoreError().rows;
+        double send_latitude = memberRepository.findLatitudeById(sendId).orElseThrow(NotExistLocationInfoException::new);
+        double send_longitude = memberRepository.findLongitudeById(sendId).orElseThrow(NotExistLocationInfoException::new);
 
-        String deliveryTime = "";
+        double receive_latitude = memberRepository.findLatitudeById(receiveId).orElseThrow(NotExistLocationInfoException::new);
+        double receive_longitude = memberRepository.findLongitudeById(receiveId).orElseThrow(NotExistLocationInfoException::new);
 
-        for (DistanceMatrixElement element : rows[0].elements) {
-            deliveryTime = element.duration.humanReadable;
-        }
-        return DeliveryTimeDto.from(deliveryTime);
+        double distance = haversine(send_latitude, send_longitude, receive_latitude, receive_longitude);
+
+        return DeliveryTimeDto.from(distance);
+    }
+
+    private double haversine(double send_lat, double send_lon, double receive_lat, double receive_lon) {
+        double radius = 6371;
+        double toRadian = Math.PI / 180;
+
+        double deltaLatitude = Math.abs(send_lat - receive_lat) * toRadian;
+        double deltaLongitude = Math.abs(send_lon - receive_lon) * toRadian;
+
+        double sinDeltaLat = Math.sin(deltaLatitude / 2);
+        double sinDeltaLng = Math.sin(deltaLongitude / 2);
+        double squareRoot = Math.sqrt(
+                sinDeltaLat * sinDeltaLat +
+                        Math.cos(send_lat * toRadian) * Math.cos(receive_lat * toRadian) * sinDeltaLng * sinDeltaLng);
+
+        double distance = 2 * radius * Math.asin(squareRoot);
+
+        return distance;
     }
 
 }

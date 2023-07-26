@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.penpal.global.security.SecurityUtil.*;
+import static com.example.penpal.global.security.SecurityUtil.getCurrentMemberId;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,12 +28,12 @@ public class LetterController {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "편지 전송 성공"),
             @ApiResponse(responseCode = "404", description = "특정 유저가 존재하지 않음",
-                        content = @Content(schema = @Schema(implementation = BusinessExceptionResponse.class)))
+                    content = @Content(schema = @Schema(implementation = BusinessExceptionResponse.class)))
     })
     @PostMapping("/{userId}")
     public ResponseEntity<SendLetterResponse> send(@Parameter(description = "받는 사람 Id", required = true, example = "3")
-                                                       @PathVariable("userId") Long receiveId,
-                                                        @RequestBody SendLetterRequest request) {
+                                                   @PathVariable("userId") Long receiveId,
+                                                   @RequestBody SendLetterRequest request) {
         SendLetterResponse response = letterService.sendLetter(request, getCurrentMemberId(), receiveId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -46,8 +46,8 @@ public class LetterController {
     })
     @GetMapping("/{userId}")
     public ResponseEntity<PageLetterListDto> letterList(@Parameter(description = "특정 유저 Id", required = true, example = "3")
-                                                            @PathVariable("userId") Long receiveId,
-                                                                Pageable pageable) {
+                                                        @PathVariable("userId") Long receiveId,
+                                                        Pageable pageable) {
         PageLetterListDto letters = letterService.findLetters(getCurrentMemberId(), receiveId, pageable);
         return ResponseEntity.ok(letters);
     }
@@ -84,7 +84,7 @@ public class LetterController {
     })
     @GetMapping("/{userId}/{letterId}")
     public ResponseEntity<LetterDto> letterDetails(@Parameter(description = "특정 유저 Id", required = true, example = "3")
-                                                    @PathVariable Long userId,
+                                                   @PathVariable Long userId,
                                                    @Parameter(description = "편지 Id", required = true, example = "4")
                                                    @PathVariable Long letterId) {
         LetterDto letter = letterService.findLetterDetail(userId, letterId);
@@ -99,7 +99,7 @@ public class LetterController {
     })
     @PatchMapping("/{letterId}")
     public ResponseEntity<Long> readStatusUpdate(@Parameter(description = "편지 Id", required = true, example = "3")
-                                                     @PathVariable Long letterId) {
+                                                 @PathVariable Long letterId) {
         letterService.updateReadStatus(letterId);
         return ResponseEntity.ok(letterId);
     }
@@ -108,7 +108,7 @@ public class LetterController {
     @ApiResponse(responseCode = "200", description = "편지 삭제 성공")
     @DeleteMapping("/{userId}")
     public ResponseEntity<Long> lettersRemove(@Parameter(description = "특정 유저 Id", required = true, example = "3")
-                                                  @PathVariable("userId") Long otherUserId) {
+                                              @PathVariable("userId") Long otherUserId) {
         letterService.removeLetters(getCurrentMemberId(), otherUserId);
         return ResponseEntity.ok(otherUserId);
     }
