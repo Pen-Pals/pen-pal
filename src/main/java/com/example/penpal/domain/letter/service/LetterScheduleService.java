@@ -17,8 +17,6 @@ public class LetterScheduleService {
 
     @Scheduled(fixedDelay = 60000)
     public void run(){
-        System.out.println("done");
-        System.out.println("LocalDateTime.now() = " + LocalDateTime.now());
         letterRepository.updateArrivedStatus(LocalDateTime.now());
     }
 }
