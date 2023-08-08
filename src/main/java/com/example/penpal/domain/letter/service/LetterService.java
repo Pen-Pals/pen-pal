@@ -104,8 +104,9 @@ public class LetterService {
     }
 
     public void updateReadStatus(Long letterId) {
-        letterRepository.findById(letterId).orElseThrow(NotFoundLetterException::new);
+        Letter letter = letterRepository.findById(letterId).orElseThrow(NotFoundLetterException::new);
         letterRepository.updateReadStatus(letterId);
+        letterRepository.updateReceiveDate(letterId, LocalDateTime.now());
     }
 
     public void removeLetters(Long userId, Long otherUserId) {

@@ -28,8 +28,6 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.32'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    implementation 'com.google.maps:google-maps-services:0.15.0'
-
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
