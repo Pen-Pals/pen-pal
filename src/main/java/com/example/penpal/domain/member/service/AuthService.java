@@ -10,7 +10,6 @@ import com.example.penpal.global.exception.member.DuplicateEmailException;
 import com.example.penpal.global.jwt.TokenDto;
 import com.example.penpal.global.jwt.TokenProvider;
 import com.example.penpal.global.security.SecurityUtil;
-import com.example.penpal.web.favor.model.FavorRequestDto;
 import com.example.penpal.web.member.model.*;
 import jakarta.validation.NoProviderFoundException;
 import lombok.RequiredArgsConstructor;

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,15 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
     void updateReadStatus(@Param("letterId") Long letterId);
 
     @Modifying
+    @Query("update Letter l set l.receiveDate = :now where l.id = :letterId")
+    void updateReceiveDate(@Param("letterId") Long letterId, @Param("now") LocalDateTime now);
+
+    @Modifying
     @Query("delete from Letter l where (l.sendId = :userId and l.receiveId = :otherUserId) " +
             "or (l.sendId = :otherUserId and l.receiveId = :userId)")
     void deleteAllLetter(@Param("userId") Long userId, @Param("otherUserId") Long otherUserId);
+
+    @Modifying
+    @Query("update Letter l set l.isArrived = true where l.deliveryTime <= :now")
+    void updateArrivedStatus(@Param("now") LocalDateTime now);
 }

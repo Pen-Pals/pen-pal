@@ -17,7 +17,7 @@ public class LetterDto {
     private LocalDateTime sendDate;
     private String content;
 
-    public static LetterDto from(Letter letter){
+    public static LetterDto from(Letter letter) {
         return LetterDto.builder()
                 .nickname(letter.getMember().getNickname())
                 .sendId(letter.getSendId())

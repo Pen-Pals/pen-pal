@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -29,15 +30,24 @@ public class LetterService {
 
     private final LetterRepository letterRepository;
     private final MemberRepository memberRepository;
+    private final LetterDeliveryService letterDeliveryService;
 
-    public SendLetterResponse sendLetter(SendLetterRequest request,Long sendId, Long receiveId) {
+    public SendLetterResponse sendLetter(SendLetterRequest request, Long sendId, Long receiveId) {
         Member member = memberRepository.findById(sendId).orElseThrow(NotFoundMemberException::new);
         Letter letter = SendLetterRequest.toEntity(request, member, receiveId);
+
+        DeliveryTimeDto deliveryTimeDto = letterDeliveryService.calculateDeliveryTime(receiveId);
+        LocalDateTime now = LocalDateTime.now()
+                .plusDays(deliveryTimeDto.getDays())
+                .plusHours(deliveryTimeDto.getHours())
+                .plusMinutes(deliveryTimeDto.getMins());
+        letter.storeDeliveryTime(now);
+
         Letter savedLetter = letterRepository.save(letter);
         return SendLetterResponse.from(savedLetter);
     }
 
-    public PageLetterListDto findLetters(Long sendId, Long receiveId, Pageable pageable){
+    public PageLetterListDto findLetters(Long sendId, Long receiveId, Pageable pageable) {
         PageRequest pageRequest = PageRequest.of(pageable.getPageNumber(), 10, Sort.by("sendDate").descending());
         Page<Letter> page = letterRepository.findBySendIdAndReceiveId(sendId, receiveId, pageRequest);
         int totalPages = page.getTotalPages();
@@ -45,7 +55,7 @@ public class LetterService {
         return PageLetterListDto.of(totalPages, letters);
     }
 
-    public CorrespondentListDto findCorrespondents(Long userId){
+    public CorrespondentListDto findCorrespondents(Long userId) {
         // 대화한 유저 목록
         List<Member> senders = memberRepository.findSendersByReceiveId(userId);
         List<Member> receivers = memberRepository.findReceiversBySendId(userId);
@@ -62,7 +72,7 @@ public class LetterService {
         List<UnreadCountInterface> counts = letterRepository.countUnreadLetterByReceiver(userId);
 
         // 유저가 읽지않은 편지 개수 적용
-        List<CorrespondentDto> correspondentDtos  = defaultCorrespondentDtos.stream()
+        List<CorrespondentDto> correspondentDtos = defaultCorrespondentDtos.stream()
                 .map(correspondentDto -> {
                     Optional<UnreadCountInterface> matchingCount = counts.stream()
                             .filter(count -> count.getMember().equals(correspondentDto.getMember()))
@@ -74,30 +84,32 @@ public class LetterService {
         return CorrespondentListDto.from(correspondentDtos);
     }
 
-    public LetterListDto findRecentArrivedLetters(Long userId){
+    public LetterListDto findRecentArrivedLetters(Long userId) {
         List<LetterDto> letters = letterRepository.findRecentLetter(userId)
                 .stream().map(l -> LetterDto.from(l))
                 .collect(toList());
         return LetterListDto.from(letters);
     }
 
-    public LetterListDto findIncomingLetters(Long userId){
+    public LetterListDto findIncomingLetters(Long userId) {
         List<LetterDto> letters = letterRepository.findIncomingLetter(userId)
                 .stream().map(l -> LetterDto.from(l))
                 .collect(toList());
         return LetterListDto.from(letters);
     }
 
-    public LetterDto findLetterDetail(Long userId, Long letterId){
+    public LetterDto findLetterDetail(Long userId, Long letterId) {
         Letter letter = letterRepository.findByUserId(userId, letterId).orElseThrow(NotFoundLetterException::new);
         return LetterDto.from(letter);
     }
 
-    public void updateReadStatus(Long letterId){
+    public void updateReadStatus(Long letterId) {
+        Letter letter = letterRepository.findById(letterId).orElseThrow(NotFoundLetterException::new);
         letterRepository.updateReadStatus(letterId);
+        letterRepository.updateReceiveDate(letterId, LocalDateTime.now());
     }
 
-    public void removeLetters(Long userId, Long otherUserId){
+    public void removeLetters(Long userId, Long otherUserId) {
         letterRepository.deleteAllLetter(userId, otherUserId);
     }
 }

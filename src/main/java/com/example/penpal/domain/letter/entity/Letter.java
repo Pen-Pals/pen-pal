@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Letter {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "letter_id")
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,4 +51,9 @@ public class Letter {
         this.isArrived = false;
         this.isRead = false;
     }
+
+    public void storeDeliveryTime(LocalDateTime localDateTime) {
+        deliveryTime = localDateTime;
+    }
+
 }

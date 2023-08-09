@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(BusinessException.class)
-    protected ResponseEntity<BusinessExceptionResponse> handleBusinessException(BusinessException ex){
+    protected ResponseEntity<BusinessExceptionResponse> handleBusinessException(BusinessException ex) {
         BusinessExceptionResponse response = BusinessExceptionResponse.from(ex);
         return new ResponseEntity<>(response, ex.getHttpStatus());
     }

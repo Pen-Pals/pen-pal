@@ -4,7 +4,7 @@ package com.example.penpal.global.exception.common;
 import com.example.penpal.global.exception.code.ErrorCode;
 import org.springframework.http.HttpStatus;
 
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
@@ -13,11 +13,11 @@ public class BusinessException extends RuntimeException{
         this.errorCode = errorCode;
     }
 
-    public int getStatus(){
+    public int getStatus() {
         return errorCode.getStatus();
     }
 
-    public HttpStatus getHttpStatus(){
+    public HttpStatus getHttpStatus() {
         return errorCode.getHttpStatus();
     }
 }

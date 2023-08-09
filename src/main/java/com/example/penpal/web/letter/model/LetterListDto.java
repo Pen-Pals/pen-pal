@@ -13,7 +13,7 @@ public class LetterListDto {
 
     List<LetterDto> letters = new ArrayList<>();
 
-    public static LetterListDto from(List<LetterDto> letters){
+    public static LetterListDto from(List<LetterDto> letters) {
         LetterListDto letterListDto = new LetterListDto();
         letterListDto.letters = letters;
         return letterListDto;

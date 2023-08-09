@@ -53,5 +53,4 @@ public class Favor {
         this.travel = travel;
     }
 
-
 }
