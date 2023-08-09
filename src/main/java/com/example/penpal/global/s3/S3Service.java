@@ -25,6 +25,7 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
+    // 파일 업로드
     public List<ProfileDto> uploadFile(String fileType, List<MultipartFile> multipartFiles) {
         List<ProfileDto> s3files = new ArrayList<>();
 

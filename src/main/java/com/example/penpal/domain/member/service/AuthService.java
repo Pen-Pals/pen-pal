@@ -38,8 +38,9 @@ public class AuthService {
             throw new DuplicateEmailException();
         }
         Favor favor = favorRepository.save(req.getFavor().toDto());
-        Member member = req.getMember().toEntity(passwordEncoder, favor);
+        Member member = req.getMember().toEntity(passwordEncoder);
         memberRepository.save(member);
+        member.updateFavors(favor);
         return MemberResponseDto.toDto(member);
     }
 
@@ -78,3 +79,5 @@ public class AuthService {
     }
 
 }
+
+

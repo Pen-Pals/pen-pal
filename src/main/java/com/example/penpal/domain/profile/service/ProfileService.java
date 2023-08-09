@@ -14,6 +14,7 @@ import com.example.penpal.web.profile.ProfileUpdateDto;
 import jakarta.validation.NoProviderFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -23,13 +24,13 @@ public class ProfileService {
     private final MemberRepository memberRepository;
 
     // 프로필 추가
+    @Transactional
     public ProfileResponseDto addProfile(ProfileUpdateDto profileUpdateDto) {
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(NoProviderFoundException::new);
         Profile profile = profileUpdateDto.toEntity(profileUpdateDto.getProfileUrl(), profileUpdateDto.getProfileText());
         profileRepository.save(profile);
         member.updateProfile(profile);
-
         return ProfileResponseDto.toDto(profile);
     }
 

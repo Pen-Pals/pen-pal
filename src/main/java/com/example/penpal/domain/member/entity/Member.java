@@ -43,7 +43,6 @@ public class Member extends BaseTimeEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-
     @Enumerated(EnumType.STRING)
     private Authority authority;
     @OneToOne(fetch = FetchType.EAGER)
@@ -58,14 +57,13 @@ public class Member extends BaseTimeEntity {
     }
 
     @Builder
-    public Member(String email, String password, String nickname, Gender gender, LocalDate birthday, Authority authority, Favor favors) {
+    public Member(String email, String password, String nickname, Gender gender, LocalDate birthday, Authority authority) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.gender = gender;
         this.birthday = birthday;
         this.authority = authority;
-        this.favors = favors;
     }
 
     public void update(MemberUpdateDto req, PasswordEncoder passwordEncoder) {
