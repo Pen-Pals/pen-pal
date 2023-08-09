@@ -39,9 +39,18 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate birthday;
 
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @Column(nullable = false)
+    private String address;
+
+    private String location;
+    private double latitude;
+    private double longitude;
+
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
