@@ -42,7 +42,6 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private String address;
 
-    private String profileText;
     private String profileImage;
     private String location;
     private double latitude;
