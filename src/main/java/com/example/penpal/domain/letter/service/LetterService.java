@@ -75,7 +75,7 @@ public class LetterService {
         List<CorrespondentDto> correspondentDtos = defaultCorrespondentDtos.stream()
                 .map(correspondentDto -> {
                     Optional<UnreadCountInterface> matchingCount = counts.stream()
-                            .filter(count -> count.getMember().equals(correspondentDto.getMember()))
+                            .filter(count -> count.getMember().getId().equals(correspondentDto.getMember().getId()))
                             .findFirst();
                     return matchingCount.map(count -> CorrespondentDto.of(count.getUnreadCount(), count.getMember()))
                             .orElse(correspondentDto);
