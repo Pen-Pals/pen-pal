@@ -1,4 +1,4 @@
-package com.example.penpal.domain.country;
+package com.example.penpal.domain.country.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
