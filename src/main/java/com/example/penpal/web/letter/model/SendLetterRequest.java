@@ -22,6 +22,7 @@ public class SendLetterRequest {
                 .content(request.content)
                 .sendDate(LocalDateTime.now())
                 .receiveDate(LocalDateTime.now())
+                .deliveryTime(LocalDateTime.now().plusHours(24))
                 .build();
     }
 }

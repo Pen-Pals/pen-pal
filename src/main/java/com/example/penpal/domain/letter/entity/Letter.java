@@ -1,6 +1,7 @@
 package com.example.penpal.domain.letter.entity;
 
 import com.example.penpal.domain.member.entity.Member;
+import com.example.penpal.web.letter.model.DeliveryTimeDto;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -52,8 +53,10 @@ public class Letter {
         this.isRead = false;
     }
 
-    public void storeDeliveryTime(LocalDateTime localDateTime) {
-        deliveryTime = localDateTime;
+    public void addDeliveryTime(DeliveryTimeDto deliveryTimeDto) {
+        this.deliveryTime = this.deliveryTime.plusDays(deliveryTimeDto.getDays())
+                .plusHours(deliveryTimeDto.getHours())
+                .plusMinutes(deliveryTimeDto.getMins());
     }
 
 }
