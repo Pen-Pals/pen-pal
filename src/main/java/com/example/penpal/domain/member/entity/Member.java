@@ -1,6 +1,7 @@
 package com.example.penpal.domain.member.entity;
 
 import com.example.penpal.domain.common.BaseTimeEntity;
+import com.example.penpal.domain.country.Country;
 import com.example.penpal.domain.favor.entity.Favor;
 import com.example.penpal.domain.profile.entity.Profile;
 import com.example.penpal.web.member.model.MemberUpdateDto;
@@ -44,13 +45,9 @@ public class Member extends BaseTimeEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @Column(nullable = false)
-    private String address;
-
-    private String location;
-    private double latitude;
-    private double longitude;
-
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_name")
+    private Country country;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
