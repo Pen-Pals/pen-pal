@@ -1,16 +1,12 @@
 package com.example.penpal.domain.member.entity;
 
 import com.example.penpal.domain.common.BaseTimeEntity;
-import com.example.penpal.domain.country.Country;
+import com.example.penpal.domain.country.entity.Country;
 import com.example.penpal.domain.favor.entity.Favor;
 import com.example.penpal.domain.profile.entity.Profile;
 import com.example.penpal.web.member.model.MemberUpdateDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
@@ -40,11 +36,12 @@ public class Member extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate birthday;
 
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_name")
     private Country country;
 
     @Enumerated(EnumType.STRING)
@@ -56,6 +53,7 @@ public class Member extends BaseTimeEntity {
     public void updateFavors(Favor favors) {
         this.favors = favors;
     }
+
     public void updateProfile(Profile profile) {
         this.profile = profile;
     }

@@ -37,11 +37,7 @@ public class LetterService {
         Letter letter = SendLetterRequest.toEntity(request, member, receiveId);
 
         DeliveryTimeDto deliveryTimeDto = letterDeliveryService.calculateDeliveryTime(receiveId);
-        LocalDateTime now = LocalDateTime.now()
-                .plusDays(deliveryTimeDto.getDays())
-                .plusHours(deliveryTimeDto.getHours())
-                .plusMinutes(deliveryTimeDto.getMins());
-        letter.storeDeliveryTime(now);
+        letter.addDeliveryTime(deliveryTimeDto);
 
         Letter savedLetter = letterRepository.save(letter);
         return SendLetterResponse.from(savedLetter);
@@ -75,7 +71,7 @@ public class LetterService {
         List<CorrespondentDto> correspondentDtos = defaultCorrespondentDtos.stream()
                 .map(correspondentDto -> {
                     Optional<UnreadCountInterface> matchingCount = counts.stream()
-                            .filter(count -> count.getMember().equals(correspondentDto.getMember()))
+                            .filter(count -> count.getMember().getId().equals(correspondentDto.getMember().getId()))
                             .findFirst();
                     return matchingCount.map(count -> CorrespondentDto.of(count.getUnreadCount(), count.getMember()))
                             .orElse(correspondentDto);
@@ -111,5 +107,13 @@ public class LetterService {
 
     public void removeLetters(Long userId, Long otherUserId) {
         letterRepository.deleteAllLetter(userId, otherUserId);
+    }
+
+    public LetterRemainTimeListDto calculateRemainingTime(Long userId){
+        List<Letter> incomingLetter = letterRepository.findIncomingLetter(userId);
+        List<LetterRemainTimeDto> letterRemainTimeDtoList = incomingLetter.stream()
+                .map(letter -> LetterRemainTimeDto.from(letter))
+                .collect(toList());
+        return LetterRemainTimeListDto.from(letterRemainTimeDtoList);
     }
 }

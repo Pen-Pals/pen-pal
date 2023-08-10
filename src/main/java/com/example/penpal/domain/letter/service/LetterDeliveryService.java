@@ -1,13 +1,17 @@
 package com.example.penpal.domain.letter.service;
 
 import com.example.penpal.domain.letter.repository.LetterRepository;
+import com.example.penpal.domain.member.entity.Member;
 import com.example.penpal.domain.member.repository.MemberRepository;
 import com.example.penpal.global.exception.member.NotExistLocationInfoException;
+import com.example.penpal.global.exception.member.NotFoundMemberException;
 import com.example.penpal.global.security.SecurityUtil;
 import com.example.penpal.web.letter.model.DeliveryTimeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.example.penpal.global.security.SecurityUtil.*;
 
 @Service
 @Transactional
@@ -17,13 +21,15 @@ public class LetterDeliveryService {
     private final MemberRepository memberRepository;
 
     public DeliveryTimeDto calculateDeliveryTime(Long receiveId) {
-        Long sendId = SecurityUtil.getCurrentMemberId();
 
-        double send_latitude = memberRepository.findLatitudeById(sendId).orElseThrow(NotExistLocationInfoException::new);
-        double send_longitude = memberRepository.findLongitudeById(sendId).orElseThrow(NotExistLocationInfoException::new);
+        Member sendMember = memberRepository.findById(getCurrentMemberId()).orElseThrow(NotFoundMemberException::new);
+        Member receiveMember = memberRepository.findById(receiveId).orElseThrow(NotFoundMemberException::new);
 
-        double receive_latitude = memberRepository.findLatitudeById(receiveId).orElseThrow(NotExistLocationInfoException::new);
-        double receive_longitude = memberRepository.findLongitudeById(receiveId).orElseThrow(NotExistLocationInfoException::new);
+        double send_latitude = sendMember.getCountry().getLatitude();
+        double send_longitude = sendMember.getCountry().getLongitude();
+
+        double receive_latitude = receiveMember.getCountry().getLatitude();
+        double receive_longitude = receiveMember.getCountry().getLongitude();
 
         double distance = haversine(send_latitude, send_longitude, receive_latitude, receive_longitude);
 

@@ -16,7 +16,9 @@ import java.util.Optional;
 public interface LetterRepository extends JpaRepository<Letter, Long> {
 
     //기능 수정 필요
-    Page<Letter> findBySendIdAndReceiveId(Long sendId, Long receiveId, Pageable pageable);
+    @Query("select l from Letter l where l.sendId = :sendId and l.receiveId = :receiveId " +
+            "or l.sendId = :receiveId and l.receiveId = :sendId")
+    Page<Letter> findBySendIdAndReceiveId(@Param("sendId") Long sendId, @Param("receiveId") Long receiveId, Pageable pageable);
 
     @Query("select l.member as member, count(*) as unreadCount from Letter l join Member m on m.id = l.member.id " +
             "where l.receiveId = :receiveId and l.isRead = false group by l.member")
