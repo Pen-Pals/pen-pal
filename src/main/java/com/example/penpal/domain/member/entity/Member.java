@@ -53,6 +53,7 @@ public class Member extends BaseTimeEntity {
     public void updateFavors(Favor favors) {
         this.favors = favors;
     }
+    public void updateCountry(Country country) {this.country = country;}
 
     public void updateProfile(Profile profile) {
         this.profile = profile;
@@ -60,13 +61,12 @@ public class Member extends BaseTimeEntity {
 
     @Builder
     public Member(String email, String password, String nickname, Gender gender,
-                  LocalDate birthday, Country country, Authority authority) {
+                  LocalDate birthday, Country country ,Authority authority) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.gender = gender;
         this.birthday = birthday;
-        this.country = country;
         this.authority = authority;
     }
 

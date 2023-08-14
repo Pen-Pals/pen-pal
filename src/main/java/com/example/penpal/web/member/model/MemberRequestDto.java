@@ -31,7 +31,6 @@ public class MemberRequestDto {
     private String password;
     private String nickname;
     private Gender gender;
-    private Country country;
     private LocalDate birthday;
 
     public Member toEntity(PasswordEncoder passwordEncoder) {
@@ -41,7 +40,6 @@ public class MemberRequestDto {
                 .nickname(nickname)
                 .gender(gender)
                 .birthday(birthday)
-                .country(country)
                 .authority(Authority.ROLE_USER)
                 .build();
     }

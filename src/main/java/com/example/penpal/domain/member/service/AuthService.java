@@ -1,5 +1,7 @@
 package com.example.penpal.domain.member.service;
 
+import com.example.penpal.domain.country.entity.Country;
+import com.example.penpal.domain.country.repository.CountryRepository;
 import com.example.penpal.domain.favor.entity.Favor;
 import com.example.penpal.domain.favor.repository.FavorRepository;
 import com.example.penpal.domain.member.entity.Member;
@@ -20,11 +22,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final CountryRepository countryRepository;
     private final FavorRepository favorRepository;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
@@ -38,8 +43,12 @@ public class AuthService {
         }
         Favor favor = favorRepository.save(req.getFavor().toDto());
         Member member = req.getMember().toEntity(passwordEncoder);
+        Country country = countryRepository.findByCountryName(req.getCountry().getCountryName())
+                .orElseThrow();
         memberRepository.save(member);
         member.updateFavors(favor);
+        member.updateCountry(country);
+        System.out.println(member.getCountry().getLatitude());
         return MemberResponseDto.toDto(member);
     }
 
