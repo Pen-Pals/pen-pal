@@ -1,5 +1,6 @@
 package com.example.penpal.web.member.model;
 
+import com.example.penpal.domain.country.entity.Country;
 import com.example.penpal.domain.member.entity.Authority;
 import com.example.penpal.domain.member.entity.Gender;
 import com.example.penpal.domain.member.entity.Member;
@@ -30,6 +31,7 @@ public class MemberRequestDto {
     private String password;
     private String nickname;
     private Gender gender;
+    private Country country;
     private LocalDate birthday;
 
     public Member toEntity(PasswordEncoder passwordEncoder) {
@@ -39,6 +41,7 @@ public class MemberRequestDto {
                 .nickname(nickname)
                 .gender(gender)
                 .birthday(birthday)
+                .country(country)
                 .authority(Authority.ROLE_USER)
                 .build();
     }

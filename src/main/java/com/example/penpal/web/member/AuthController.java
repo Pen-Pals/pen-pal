@@ -42,6 +42,8 @@ public class AuthController {
         return ResponseEntity.ok(tokenDto);
     }
 
+    @Operation(summary = "My information", description = "내 정보 조회")
+    @ApiResponse(responseCode = "200", description = "Successful")
     @GetMapping("/info")
     public ResponseEntity<MemberResponseDto> memberInfo() {
         MemberResponseDto result = authService.getMemberInfo();
