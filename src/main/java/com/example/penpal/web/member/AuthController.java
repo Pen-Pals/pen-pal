@@ -34,6 +34,8 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.signup(req));
     }
 
+    @Operation(summary = "Login Method", description = "로그인")
+    @ApiResponse(responseCode = "200", description = "Successful")
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@RequestBody MemberLoginRequestDto req) {
         TokenDto tokenDto = authService.login(req);
