@@ -1,5 +1,7 @@
 package com.example.penpal.domain.letter.service;
 
+import com.example.penpal.domain.country.entity.Country;
+import com.example.penpal.domain.country.repository.CountryRepository;
 import com.example.penpal.domain.letter.repository.LetterRepository;
 import com.example.penpal.domain.member.entity.Member;
 import com.example.penpal.domain.member.repository.MemberRepository;
@@ -19,17 +21,21 @@ import static com.example.penpal.global.security.SecurityUtil.*;
 public class LetterDeliveryService {
 
     private final MemberRepository memberRepository;
+    private final CountryRepository countryRepository;
 
     public DeliveryTimeDto calculateDeliveryTime(Long receiveId) {
 
         Member sendMember = memberRepository.findById(getCurrentMemberId()).orElseThrow(NotFoundMemberException::new);
         Member receiveMember = memberRepository.findById(receiveId).orElseThrow(NotFoundMemberException::new);
 
-        double send_latitude = sendMember.getCountry().getLatitude();
-        double send_longitude = sendMember.getCountry().getLongitude();
+        Country sendCountry = countryRepository.findByCountryName(sendMember.getCountry()).orElseThrow();
+        Country receiveCountry = countryRepository.findByCountryName(receiveMember.getCountry()).orElseThrow();
 
-        double receive_latitude = receiveMember.getCountry().getLatitude();
-        double receive_longitude = receiveMember.getCountry().getLongitude();
+        double send_latitude = sendCountry.getLatitude();
+        double send_longitude = sendCountry.getLongitude();
+
+        double receive_latitude = receiveCountry.getLatitude();
+        double receive_longitude = receiveCountry.getLongitude();
 
         double distance = haversine(send_latitude, send_longitude, receive_latitude, receive_longitude);
 

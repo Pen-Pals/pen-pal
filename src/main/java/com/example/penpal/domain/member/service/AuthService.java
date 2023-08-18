@@ -47,8 +47,7 @@ public class AuthService {
                 .orElseThrow();
         memberRepository.save(member);
         member.updateFavors(favor);
-        member.updateCountry(country);
-        System.out.println(member.getCountry().getLatitude());
+        member.updateCountry(country.getCountryName());
         return MemberResponseDto.toDto(member);
     }
 
