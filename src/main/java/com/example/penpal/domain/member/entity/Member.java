@@ -40,9 +40,7 @@ public class Member extends BaseTimeEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "country_name")
-    private Country country;
+    private String country;
 
     @Enumerated(EnumType.STRING)
     private Authority authority;
@@ -53,7 +51,7 @@ public class Member extends BaseTimeEntity {
     public void updateFavors(Favor favors) {
         this.favors = favors;
     }
-    public void updateCountry(Country country) {this.country = country;}
+    public void updateCountry(String country) {this.country = country;}
 
     public void updateProfile(Profile profile) {
         this.profile = profile;
