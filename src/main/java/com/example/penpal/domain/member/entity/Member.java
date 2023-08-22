@@ -51,7 +51,6 @@ public class Member extends BaseTimeEntity {
     public void updateFavors(Favor favors) {
         this.favors = favors;
     }
-    public void updateCountry(String country) {this.country = country;}
 
     public void updateProfile(Profile profile) {
         this.profile = profile;
