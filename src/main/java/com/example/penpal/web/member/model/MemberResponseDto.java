@@ -21,6 +21,7 @@ public class MemberResponseDto {
     private Gender gender;
     private LocalDate birthday;
     private Favor favors;
+    private String country;
 
 
     public static MemberResponseDto toDto(Member member) {
@@ -31,7 +32,8 @@ public class MemberResponseDto {
                 member.getNickname(),
                 member.getGender(),
                 member.getBirthday(),
-                member.getFavors()
+                member.getFavors(),
+                member.getCountry()
         );
     }
 }

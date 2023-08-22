@@ -29,7 +29,6 @@ import java.util.Optional;
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final CountryRepository countryRepository;
     private final FavorRepository favorRepository;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
@@ -43,11 +42,9 @@ public class AuthService {
         }
         Favor favor = favorRepository.save(req.getFavor().toDto());
         Member member = req.getMember().toEntity(passwordEncoder);
-        Country country = countryRepository.findByCountryName(req.getCountry().getCountryName())
-                .orElseThrow();
         memberRepository.save(member);
         member.updateFavors(favor);
-        member.updateCountry(country.getCountryName());
+
         return MemberResponseDto.toDto(member);
     }
 
