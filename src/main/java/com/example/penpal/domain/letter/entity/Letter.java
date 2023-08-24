@@ -36,6 +36,8 @@ public class Letter {
     private String content;
     private boolean isArrived;
     private boolean isRead;
+    private boolean deletedBySender;
+    private boolean deletedByReceiver;
 
     @Builder
     public Letter(Member member, Long sendId, Long receiveId, String sendLocation, String receiveLocation,
@@ -51,6 +53,8 @@ public class Letter {
         this.content = content;
         this.isArrived = false;
         this.isRead = false;
+        this.deletedBySender = false;
+        this.deletedByReceiver = false;
     }
 
     public void addDeliveryTime(DeliveryTimeDto deliveryTimeDto) {

@@ -87,7 +87,7 @@ public class LetterController {
                                                    @PathVariable Long userId,
                                                    @Parameter(description = "편지 Id", required = true, example = "4")
                                                    @PathVariable Long letterId) {
-        LetterDto letter = letterService.findLetterDetail(userId, letterId);
+        LetterDto letter = letterService.findLetterDetail(getCurrentMemberId(), userId, letterId);
         return ResponseEntity.ok(letter);
     }
 
