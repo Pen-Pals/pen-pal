@@ -53,6 +53,10 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
     void deleteLetterByReceiver(@Param("myId") Long myId, @Param("otherUserId") Long otherUserId);
 
     @Modifying
+    @Query("delete from Letter l where l.deletedBySender = true and l.deletedByReceiver = true")
+    void deleteLetter();
+
+    @Modifying
     @Query("update Letter l set l.isArrived = true where l.deliveryTime <= :now")
     void updateArrivedStatus(@Param("now") LocalDateTime now);
 }
