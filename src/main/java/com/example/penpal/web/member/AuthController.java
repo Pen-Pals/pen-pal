@@ -50,6 +50,14 @@ public class AuthController {
         return ResponseEntity.ok(result);
     }
 
+    @Operation(summary = "Other information", description = "상대방 정보 조회")
+    @ApiResponse(responseCode = "200", description = "Successful")
+    @GetMapping("/info/{id}")
+    public ResponseEntity<OtherMemberResponseDto> otherMemberInfo(@PathVariable Long id) {
+        OtherMemberResponseDto result = authService.getMemberInfo(id);
+        return ResponseEntity.ok(result);
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<MemberResponseDto> editMember(@RequestBody MemberUpdateDto req) {
         MemberResponseDto result = authService.updateMember(req);
