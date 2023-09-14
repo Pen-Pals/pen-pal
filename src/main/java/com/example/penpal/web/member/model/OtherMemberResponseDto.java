@@ -13,22 +13,17 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MemberResponseDto {
+public class OtherMemberResponseDto {
     private Long id;
-    private String email;
-    private String password;
     private String nickname;
     private Gender gender;
     private LocalDate birthday;
     private Favor favors;
     private String country;
 
-
-    public static MemberResponseDto toDto(Member member) {
-        return new MemberResponseDto(
+    public static OtherMemberResponseDto toDto(Member member) {
+        return new OtherMemberResponseDto(
                 member.getId(),
-                member.getEmail(),
-                member.getPassword(),
                 member.getNickname(),
                 member.getGender(),
                 member.getBirthday(),

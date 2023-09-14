@@ -29,7 +29,6 @@ import java.util.Optional;
 public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final CountryRepository countryRepository;
     private final FavorRepository favorRepository;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
@@ -43,11 +42,9 @@ public class AuthService {
         }
         Favor favor = favorRepository.save(req.getFavor().toDto());
         Member member = req.getMember().toEntity(passwordEncoder);
-        Country country = countryRepository.findByCountryName(req.getCountry().getCountryName())
-                .orElseThrow();
         memberRepository.save(member);
         member.updateFavors(favor);
-        member.updateCountry(country.getCountryName());
+
         return MemberResponseDto.toDto(member);
     }
 
@@ -73,8 +70,14 @@ public class AuthService {
     public MemberResponseDto getMemberInfo(){
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(NoProviderFoundException::new);
-        System.out.println("member = " + member);
         return MemberResponseDto.toDto(member);
+    }
+
+    // 상대방 정보 조회
+    public OtherMemberResponseDto getMemberInfo(Long id){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberRepository.findById(id).orElseThrow(NoProviderFoundException::new);
+        return OtherMemberResponseDto.toDto(member);
     }
 
     @Transactional
