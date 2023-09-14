@@ -16,7 +16,6 @@ public class Favor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "favor_id")
     private Long id;
-
     private boolean movie;
     private boolean language;
     private boolean book;
@@ -29,10 +28,29 @@ public class Favor {
     private boolean art;
     private boolean travel;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-
+    @Builder
+    public Favor(boolean movie,
+                 boolean language,
+                 boolean book,
+                 boolean coding,
+                 boolean fantasy,
+                 boolean sports,
+                 boolean entertainment,
+                 boolean music,
+                 boolean fashion,
+                 boolean art,
+                 boolean travel) {
+        this.movie = movie;
+        this.language = language;
+        this.book = book;
+        this.coding = coding;
+        this.fantasy = fantasy;
+        this.sports = sports;
+        this.entertainment = entertainment;
+        this.music = music;
+        this.fashion = fashion;
+        this.art = art;
+        this.travel = travel;
+    }
 
 }
