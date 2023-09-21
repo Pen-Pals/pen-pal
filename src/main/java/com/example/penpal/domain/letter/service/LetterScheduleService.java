@@ -16,12 +16,12 @@ public class LetterScheduleService {
     private final LetterRepository letterRepository;
 
     @Scheduled(fixedDelay = 60000)
-    private void updateArrivedStatus(){
+    protected void updateArrivedStatus(){
         letterRepository.updateArrivedStatus(LocalDateTime.now());
     }
 
     @Scheduled(fixedDelay = 86400000)
-    private void deleteLetter(){
+    protected void deleteLetter(){
         letterRepository.deleteLetter();
     }
 
