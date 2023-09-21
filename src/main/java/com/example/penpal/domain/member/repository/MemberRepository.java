@@ -22,4 +22,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             "(select distinct l.sendId from Letter l where l.receiveId = :receiveId and l.deletedByReceiver = false)")
     List<Member> findSendersByReceiveId(@Param("receiveId") Long receiveId);
 
+    @Query("select m from Member m join fetch m.profile p where " +
+            "m.nickname like concat(:query, '%') order by length(m.nickname)")
+    List<Member> findMembersWithProfile(@Param("query") String query);
+
 }
