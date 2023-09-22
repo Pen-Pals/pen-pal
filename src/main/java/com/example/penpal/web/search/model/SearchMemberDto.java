@@ -10,12 +10,10 @@ import lombok.*;
 public class SearchMemberDto {
 
     private Member member;
-    private boolean isFriend;
 
     public static SearchMemberDto from(Member member){
        return SearchMemberDto.builder()
                .member(member)
-               .isFriend(false)
                .build();
     }
 }
