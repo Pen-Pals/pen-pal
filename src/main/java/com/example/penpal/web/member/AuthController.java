@@ -1,12 +1,9 @@
 package com.example.penpal.web.member;
 
 import com.example.penpal.domain.member.service.AuthService;
-import com.example.penpal.global.exception.member.DuplicateEmailException;
 import com.example.penpal.global.jwt.TokenDto;
-import com.example.penpal.web.favor.model.FavorRequestDto;
 import com.example.penpal.web.member.model.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -62,5 +59,12 @@ public class AuthController {
     public ResponseEntity<MemberResponseDto> editMember(@RequestBody MemberUpdateDto req) {
         MemberResponseDto result = authService.updateMember(req);
         return ResponseEntity.ok(result);
+    }
+
+    @Operation(summary = "Delete information", description = "회원 탈퇴")
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteMember() {
+        authService.deleteMember();
+        return new ResponseEntity<>( "You have deleted",HttpStatus.OK);
     }
 }

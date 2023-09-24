@@ -88,6 +88,13 @@ public class AuthService {
         return MemberResponseDto.toDto(member);
     }
 
+    // 회원 탈퇴
+    @Transactional
+    public void deleteMember() {
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        memberRepository.deleteById(memberId);
+    }
+
 }
 
 
