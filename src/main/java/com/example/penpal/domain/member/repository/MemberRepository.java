@@ -14,13 +14,20 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByEmail(String email);
 
+
     void deleteById(Long memberId);
 
-    @Query("select m from Member m where m.id in (select l.receiveId from Letter l where l.sendId = :sendId)")
+   
+    @Query("select m from Member m where m.id in " +
+            "(select distinct l.receiveId from Letter l where l.sendId = :sendId and l.deletedBySender = false)")
     List<Member> findReceiversBySendId(@Param("sendId") Long sendId);
 
-    @Query("select m1 from Member m1 where m1.id in " +
-            "(select distinct m2.id from Member m2 join Letter l on m2.id = l.member.id where l.receiveId = :receiveId)")
+    @Query("select m from Member m where m.id in " +
+            "(select distinct l.sendId from Letter l where l.receiveId = :receiveId and l.deletedByReceiver = false)")
     List<Member> findSendersByReceiveId(@Param("receiveId") Long receiveId);
+
+    @Query("select m from Member m join fetch m.profile p where " +
+            "m.nickname like concat(:query, '%') order by length(m.nickname)")
+    List<Member> findMembersWithProfile(@Param("query") String query);
 
 }

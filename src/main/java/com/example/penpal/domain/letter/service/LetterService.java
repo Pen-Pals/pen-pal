@@ -94,8 +94,8 @@ public class LetterService {
         return LetterListDto.from(letters);
     }
 
-    public LetterDto findLetterDetail(Long userId, Long letterId) {
-        Letter letter = letterRepository.findByUserId(userId, letterId).orElseThrow(NotFoundLetterException::new);
+    public LetterDto findLetterDetail(Long myId, Long userId, Long letterId) {
+        Letter letter = letterRepository.findByUserId(myId, userId, letterId).orElseThrow(NotFoundLetterException::new);
         return LetterDto.from(letter);
     }
 
@@ -105,11 +105,12 @@ public class LetterService {
         letterRepository.updateReceiveDate(letterId, LocalDateTime.now());
     }
 
-    public void removeLetters(Long userId, Long otherUserId) {
-        letterRepository.deleteAllLetter(userId, otherUserId);
+    public void removeLetters(Long myId, Long otherUserId) {
+        letterRepository.deleteLetterBySender(myId, otherUserId);
+        letterRepository.deleteLetterByReceiver(myId, otherUserId);
     }
 
-    public LetterRemainTimeListDto calculateRemainingTime(Long userId){
+    public LetterRemainTimeListDto calculateRemainingTime(Long userId) {
         List<Letter> incomingLetter = letterRepository.findIncomingLetter(userId);
         List<LetterRemainTimeDto> letterRemainTimeDtoList = incomingLetter.stream()
                 .map(letter -> LetterRemainTimeDto.from(letter))

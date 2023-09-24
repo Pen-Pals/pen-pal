@@ -15,23 +15,26 @@ import java.util.Optional;
 
 public interface LetterRepository extends JpaRepository<Letter, Long> {
 
-    //기능 수정 필요
-    @Query("select l from Letter l where l.sendId = :sendId and l.receiveId = :receiveId " +
-            "or l.sendId = :receiveId and l.receiveId = :sendId")
+    @Query("select l from Letter l where l.sendId = :sendId and l.receiveId = :receiveId and l.deletedBySender = false " +
+            "or l.sendId = :receiveId and l.receiveId = :sendId and l.deletedByReceiver = false")
     Page<Letter> findBySendIdAndReceiveId(@Param("sendId") Long sendId, @Param("receiveId") Long receiveId, Pageable pageable);
 
     @Query("select l.member as member, count(*) as unreadCount from Letter l join Member m on m.id = l.member.id " +
-            "where l.receiveId = :receiveId and l.isRead = false group by l.member")
+            "where l.receiveId = :receiveId and l.isRead = false and l.deletedByReceiver = false group by l.member")
     List<UnreadCountInterface> countUnreadLetterByReceiver(@Param("receiveId") Long receiveId);
 
-    @Query("select l from Letter l join fetch Member m where l.receiveId = :userId and l.isArrived = true")
+    @Query("select l from Letter l join fetch Member m " +
+            "where l.receiveId = :userId and l.isArrived = true and l.deletedByReceiver = false")
     List<Letter> findRecentLetter(@Param("userId") Long userId);
 
-    @Query("select l from Letter l join fetch Member m where l.receiveId = :userId and l.isArrived = false ")
+    @Query("select l from Letter l join fetch Member m " +
+            "where l.receiveId = :userId and l.isArrived = false and l.deletedByReceiver = false")
     List<Letter> findIncomingLetter(@Param("userId") Long userId);
 
-    @Query("select l from Letter l join fetch Member m where l.id = :letterId and (l.sendId = :userId or l.receiveId = :userId)")
-    Optional<Letter> findByUserId(@Param("userId") Long userId, @Param("letterId") Long letterId);
+    @Query("select l from Letter l where l.id = :letterId and " +
+            "(l.sendId = :myId and l.receiveId = :userId and l.deletedBySender = false) " +
+            "or (l.sendId = :userId and l.receiveId = :myId and l.deletedByReceiver = false)")
+    Optional<Letter> findByUserId(@Param("myId") Long myId, @Param("userId") Long userId, @Param("letterId") Long letterId);
 
     @Modifying
     @Query("update Letter l set l.isRead = true where l.id = :letterId")
@@ -42,9 +45,16 @@ public interface LetterRepository extends JpaRepository<Letter, Long> {
     void updateReceiveDate(@Param("letterId") Long letterId, @Param("now") LocalDateTime now);
 
     @Modifying
-    @Query("delete from Letter l where (l.sendId = :userId and l.receiveId = :otherUserId) " +
-            "or (l.sendId = :otherUserId and l.receiveId = :userId)")
-    void deleteAllLetter(@Param("userId") Long userId, @Param("otherUserId") Long otherUserId);
+    @Query("update Letter l set l.deletedBySender = true where l.sendId = :myId and l.receiveId = :otherUserId")
+    void deleteLetterBySender(@Param("myId") Long myId, @Param("otherUserId") Long otherUserId);
+
+    @Modifying
+    @Query("update Letter l set l.deletedByReceiver = true where l.sendId = :otherUserId and l.receiveId = :myId")
+    void deleteLetterByReceiver(@Param("myId") Long myId, @Param("otherUserId") Long otherUserId);
+
+    @Modifying
+    @Query("delete from Letter l where l.deletedBySender = true and l.deletedByReceiver = true")
+    void deleteLetter();
 
     @Modifying
     @Query("update Letter l set l.isArrived = true where l.deliveryTime <= :now")
