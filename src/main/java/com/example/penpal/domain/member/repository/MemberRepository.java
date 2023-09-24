@@ -14,6 +14,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsByEmail(String email);
 
+    void deleteById(Long memberId);
+
     @Query("select m from Member m where m.id in (select l.receiveId from Letter l where l.sendId = :sendId)")
     List<Member> findReceiversBySendId(@Param("sendId") Long sendId);
 
