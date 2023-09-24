@@ -16,6 +16,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 
     void deleteById(Long memberId);
+    List<Member> findByCountry(String countryName);
 
    
     @Query("select m from Member m where m.id in " +
