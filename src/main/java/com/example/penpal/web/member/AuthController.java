@@ -1,5 +1,6 @@
 package com.example.penpal.web.member;
 
+import com.example.penpal.domain.member.entity.Member;
 import com.example.penpal.domain.member.service.AuthService;
 import com.example.penpal.global.jwt.TokenDto;
 import com.example.penpal.web.member.model.*;
@@ -14,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(name = "Member")
 @RestController
@@ -66,5 +69,10 @@ public class AuthController {
     public ResponseEntity<String> deleteMember() {
         authService.deleteMember();
         return new ResponseEntity<>( "You have deleted",HttpStatus.OK);
+    }
+
+    @GetMapping("/recommend")
+    public ResponseEntity<List<Member>> recommendMember() {
+        return new ResponseEntity<>(authService.recommendByCountry(), HttpStatus.OK);
     }
 }

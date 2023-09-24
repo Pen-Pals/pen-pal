@@ -22,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -93,6 +94,13 @@ public class AuthService {
     public void deleteMember() {
         Long memberId = SecurityUtil.getCurrentMemberId();
         memberRepository.deleteById(memberId);
+    }
+
+    // 국가에 따른 추천
+    public List<Member> recommendByCountry() {
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(NoProviderFoundException::new);
+        return memberRepository.findByCountry(member.getCountry());
     }
 
 }
